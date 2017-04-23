@@ -1,6 +1,6 @@
 catmap<-function(dataset, ci, printout, print.all){
   options(warn=-1)
-  data(catmapdata)
+  # data(catmapdata)
 
   #make defaults for catmap of 0.95 for CI and printout = TRUE
   if(missing(ci)){
@@ -199,10 +199,15 @@ catmap<-function(dataset, ci, printout, print.all){
 
 
   if(tau2 <=0){
-    return(comvarlogOR, combinedLogOR, combinedOR, combinedSeLogOR, weight, logOR, combinedVarLogOR, combinedChisq, combinedValue, combinedPvalue, lbci, ubci, combinedCI, SeLogOR, lbci.fe, ubci.fe, het.df, chisqHet, combinedHetValue, heterogeneityPvalue, tau2, studyname, a1, quantilenorm, ci, dataset)
+
+    output <- list(comvarlogOR, combinedLogOR, combinedOR, combinedSeLogOR, weight, logOR, combinedVarLogOR, combinedChisq, combinedValue, combinedPvalue, lbci, ubci, combinedCI, SeLogOR, lbci.fe, ubci.fe, het.df, chisqHet, combinedHetValue, heterogeneityPvalue, tau2, studyname, a1, quantilenorm, ci, dataset)
+    names(output) <- c("comvarlogOR", "combinedLogOR", "combinedOR", "combinedSeLogOR", "weight", "logOR", "combinedVarLogOR", "combinedChisq", "combinedValue", "combinedPvalue", "lbci", "ubci", "combinedCI", "SeLogOR", "lbci.fe", "ubci.fe", "het.df", "chisqHet", "combinedHetValue", "heterogeneityPvalue", "tau2", "studyname", "a1", "quantilenorm", "ci", "dataset")
+    return(output)
   }
   if(tau2 > 0){
-    return(comvarlogOR, combinedLogOR, combinedOR, combinedSeLogOR, weight, logOR, combinedVarLogOR, combinedChisq, combinedValue, combinedPvalue, lbci, ubci, combinedCI, SeLogOR, lbci.fe, ubci.fe, het.df, chisqHet, combinedHetValue, heterogeneityPvalue, tau2, studyname, a1, quantilenorm, ci, dataset, weight.dsl, logOR.dsl, OR.dsl, seLogOR.dsl, varLogOR.dsl, lbci.dsl, ubci.dsl, ci.dsl, chisq.dsl, value.dsl, pvalue.dsl)
+    output <- list(comvarlogOR, combinedLogOR, combinedOR, combinedSeLogOR, weight, logOR, combinedVarLogOR, combinedChisq, combinedValue, combinedPvalue, lbci, ubci, combinedCI, SeLogOR, lbci.fe, ubci.fe, het.df, chisqHet, combinedHetValue, heterogeneityPvalue, tau2, studyname, a1, quantilenorm, ci, dataset, weight.dsl, logOR.dsl, OR.dsl, seLogOR.dsl, varLogOR.dsl, lbci.dsl, ubci.dsl, ci.dsl, chisq.dsl, value.dsl, pvalue.dsl)
+    names(output) <- c("comvarlogOR", "combinedLogOR", "combinedOR", "combinedSeLogOR", "weight", "logOR", "combinedVarLogOR", "combinedChisq", "combinedValue", "combinedPvalue", "lbci", "ubci", "combinedCI", "SeLogOR", "lbci.fe", "ubci.fe", "het.df", "chisqHet", "combinedHetValue", "heterogeneityPvalue", "tau2", "studyname", "a1", "quantilenorm", "ci", "dataset", "weight.dsl", "logOR.dsl", "OR.dsl", "seLogOR.dsl", "varLogOR.dsl", "lbci.dsl", "ubci.dsl", "ci.dsl", "chisq.dsl", "value.dsl", "pvalue.dsl")
+    return(output)
   }
 }
 
