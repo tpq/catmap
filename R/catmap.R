@@ -1,17 +1,64 @@
-catmap<-function(dataset, ci, printout, print.all){
-  options(warn=-1)
-  # data(catmapdata)
+#' catmap: Case-control And TDT Meta-Analysis Package
+#'
+#' \code{catmap} is an R package that conducts fixed-effects (inverse variance)
+#' and random-effects (DerSimonian and Laird, 1986) meta-analyses of
+#' case-control or family-based (TDT) genetic data; in addition, it performs
+#' meta-analyses combining these two types of study designs.  The fixed-effects
+#' model was first described by Kazeem and Farrall (2005); the random-effects
+#' model is described in Nicodemus (submitted) and saves a text file to the
+#' current working directory of all results printed to screen (use getwd() to
+#' find cwd).
+#'
+#' catmap is an R package that conducts fixed-effects (inverse variance) and
+#' random-effects (DerSimonian and Laird, 1986) meta-analyses of case-control
+#' or family-based (TDT) genetic data; in addition, it performs meta-analyses
+#' combining these two types of study designs.  The fixed-effects model was
+#' first described by Kazeem and Farrall (2005); the random-effects model is
+#' described in Nicodemus (submitted). Cumulative meta-analyses over time and
+#' leave-one-out sensitivity analyses may be performed using either fixed- or
+#' random-effects estimates or both estimates may be calculated; both produce a
+#' .txt file and an optional .pdf plot as output. A funnel plot graphic is
+#' implemented; however, no formal test of publication bias is available (see
+#' Ioannidis & Trikalinos, 2007). If users request a file to be created
+#' containing the results the file will be saved to the current working
+#' directory, which users can find by using >getwd(). \bold{Note that a catmap
+#' object must be created on the first call to catmap. If you do not create a
+#' catmap object you will not be able to use any of the other functions AND you
+#' will get a printout of the entire contents to screen}
+#'
+#' @name catmap
+#' @docType package
+#' @param dataset A text file containing a header with the following column
+#' names: \bold{name, study, t, nt, caserisk, controlrisk, casenotrisk,
+#' controlnotrisk} in tab-delimited format.  Note that the header must be
+#' exactly as specified and that all cells in the table must have an entry,
+#' even if the entry is 0 or missing (NA).  See for example: data(catmapdata).
+#' \bold{The dataset argument to catmap should be either the example data or a
+#' file containing the data for catmap, not an R object.}
+#' @param ci The confidence level for confidence intervals; 0 < ci < 1.  The
+#' default is 0.95
+#' @param printout Logical.  Should a text file of the fixed- and
+#' random-effects models and Q statistic results be saved to the current
+#' working directory?  Output files are saved with the default name of
+#' \bold{dataset.output.txt} where dataset is the name of the file given as the
+#' first argument to catmap.  Default = TRUE.
+#' @param print.all Logical.  Should individual-study ORs, CIs and weights be
+#' printed to screen and appended to \bold{dataset.output.txt}?  Default =
+#' FALSE.
+#' @author Kristin K. Nicodemus, \email{kristin.nicodemus@@well.ox.ac.uk}
+#' @seealso \code{\link{catmap.forest}}, \code{\link{catmap.sense}},
+#' \code{\link{catmap.cumulative}}, \code{\link{catmap.funnel}}.
+#' @keywords methods
+#' @examples
+#'
+#' \dontrun{
+#' data(catmapdata)
+#' #Incorrect usage: catmap(catmapdata, 0.95, TRUE, TRUE)
+#' #Correct usage:
+#' catmapobject1<-catmap(catmapdata, 0.95, TRUE, TRUE)}
+catmap<-function(dataset, ci = 0.95, printout = TRUE, print.all = FALSE){
 
-  #make defaults for catmap of 0.95 for CI and printout = TRUE
-  if(missing(ci)){
-    ci<-0.95
-  }
-  if(missing(printout)){
-    printout<-TRUE
-  }
-  if(missing(print.all)){
-    print.all<-FALSE
-  }
+  options(warn=-1)
 
   #read in data from function
   if(dataset!=catmapdata){
@@ -106,7 +153,13 @@ catmap<-function(dataset, ci, printout, print.all){
   #print results - print to screen
 
   if(tau2 <=0){
-    table.header<-c("Inverse Variance Fixed-Effects OR", "Inverse Variance Fixed-Effects Lower Bound CI", "Inverse Variance Fixed-Effects Upper Bound CI", "Inverse Variance Fixed-Effects Chi-Square", "Inverse Variance Fixed-Effects p-value", "Q Statistic (Heterogeneity) Chi-Square", "Q Statistic (Heterogeneity) p-value")
+    table.header<-c("Inverse Variance Fixed-Effects OR",
+                    "Inverse Variance Fixed-Effects Lower Bound CI",
+                    "Inverse Variance Fixed-Effects Upper Bound CI",
+                    "Inverse Variance Fixed-Effects Chi-Square",
+                    "Inverse Variance Fixed-Effects p-value",
+                    "Q Statistic (Heterogeneity) Chi-Square",
+                    "Q Statistic (Heterogeneity) p-value")
     table.fill<-c(combinedOR, combinedCI, combinedChisq, combinedPvalue, chisqHet, heterogeneityPvalue)
     results<-rbind(table.header, round(table.fill, digits=5))
     cat("NOTICE: tau2 is less than or equal to 0;\n no random effects estimates will be calculated\n Pooled Estimates\n")
@@ -140,7 +193,18 @@ catmap<-function(dataset, ci, printout, print.all){
 
     #print results - print to screen
 
-    table.header<-c("Inverse Variance Fixed-Effects OR", "Inverse Variance Fixed-Effects Lower Bound CI", "Inverse Variance Fixed-Effects Upper Bound CI", "Inverse Variance Fixed-Effects Chi-Square", "Inverse Variance Fixed-Effects p-value", "Q Statistic (Heterogeneity) Chi-Square", "Q Statistic (Heterogeneity) p-value", "DerSimonian & Laird Random-Effects OR", "DerSimonian & Laird Random-Effects Lower Bound CI", "DerSiminian & Laird Random-Effects Upper Bound CI", "DerSimonian & Laird Random-Effects Chi-Square", "DerSimonian & Laird Random-Effects p-value")
+    table.header<-c("Inverse Variance Fixed-Effects OR",
+                    "Inverse Variance Fixed-Effects Lower Bound CI",
+                    "Inverse Variance Fixed-Effects Upper Bound CI",
+                    "Inverse Variance Fixed-Effects Chi-Square",
+                    "Inverse Variance Fixed-Effects p-value",
+                    "Q Statistic (Heterogeneity) Chi-Square",
+                    "Q Statistic (Heterogeneity) p-value",
+                    "DerSimonian & Laird Random-Effects OR",
+                    "DerSimonian & Laird Random-Effects Lower Bound CI",
+                    "DerSiminian & Laird Random-Effects Upper Bound CI",
+                    "DerSimonian & Laird Random-Effects Chi-Square",
+                    "DerSimonian & Laird Random-Effects p-value")
     table.fill<-c(combinedOR, combinedCI, combinedChisq, combinedPvalue, chisqHet, heterogeneityPvalue, OR.dsl, lbci.dsl, ubci.dsl, chisq.dsl, pvalue.dsl)
     results<-rbind(table.header, round(table.fill, digits=5))
     cat("Pooled Estimates\n")
@@ -200,8 +264,16 @@ catmap<-function(dataset, ci, printout, print.all){
 
   if(tau2 <=0){
 
-    output <- list(comvarlogOR, combinedLogOR, combinedOR, combinedSeLogOR, weight, logOR, combinedVarLogOR, combinedChisq, combinedValue, combinedPvalue, lbci, ubci, combinedCI, SeLogOR, lbci.fe, ubci.fe, het.df, chisqHet, combinedHetValue, heterogeneityPvalue, tau2, studyname, a1, quantilenorm, ci, dataset)
-    names(output) <- c("comvarlogOR", "combinedLogOR", "combinedOR", "combinedSeLogOR", "weight", "logOR", "combinedVarLogOR", "combinedChisq", "combinedValue", "combinedPvalue", "lbci", "ubci", "combinedCI", "SeLogOR", "lbci.fe", "ubci.fe", "het.df", "chisqHet", "combinedHetValue", "heterogeneityPvalue", "tau2", "studyname", "a1", "quantilenorm", "ci", "dataset")
+    output <- list(comvarlogOR, combinedLogOR, combinedOR, combinedSeLogOR,
+                   weight, logOR, combinedVarLogOR, combinedChisq, combinedValue,
+                   combinedPvalue, lbci, ubci, combinedCI, SeLogOR, lbci.fe,
+                   ubci.fe, het.df, chisqHet, combinedHetValue, heterogeneityPvalue,
+                   tau2, studyname, a1, quantilenorm, ci, dataset)
+    names(output) <- c("comvarlogOR", "combinedLogOR", "combinedOR", "combinedSeLogOR",
+                       "weight", "logOR", "combinedVarLogOR", "combinedChisq", "combinedValue",
+                       "combinedPvalue", "lbci", "ubci", "combinedCI", "SeLogOR", "lbci.fe",
+                       "ubci.fe", "het.df", "chisqHet", "combinedHetValue", "heterogeneityPvalue",
+                       "tau2", "studyname", "a1", "quantilenorm", "ci", "dataset")
     return(output)
   }
   if(tau2 > 0){
@@ -211,8 +283,55 @@ catmap<-function(dataset, ci, printout, print.all){
   }
 }
 
-#sensitivity analysis
-
+#' Leave-One-Out Sensitivity Analyses and Plots using either Fixed- or
+#' Random-Effects Estimates
+#'
+#' \code{catmap.sense} conducts leave-one-out sensitivity analyses and creates
+#' plots of the ORs and confidence intervals using either fixed- or
+#' random-effects analyses, which are saved to the current working directory
+#' (use getwd() to view) but does not create the plots in the R Graphics
+#' device.
+#'
+#' \code{catmap.sense} conducts leave-one-out sensitivity analyses and creates
+#' .pdf files of plots of the ORs and CIs using either the fixed-effect or the
+#' random-effect estimates. Plots are not created in the R Graphics device
+#' window, but are instead saved to a .pdf file in the current working
+#' directory. Likewise the .txt files of results will be saved to the current
+#' working directory. To find the current working directory, use getwd()
+#'
+#' @param catmapobject The catmap object created by a previous call to catmap
+#' @param fe.sense Logical.  Should a leave-one-out sensitivity analysis be
+#' performed using fixed-effects estimates?  Automatic output result files are
+#' saved with the default name of \bold{dataset.fixed.effects.sensitivity.txt},
+#' where dataset is the name of the file given as the first argument to catmap.
+#' Note that repeated runs of the same input file will be appended to the
+#' default output file names.
+#' @param re.sense Logical.  Should a leave-one-out sensitivity analysis be
+#' performed using random-effects estimates?  Automatic output result files are
+#' saved with the default name of
+#' \bold{dataset.random.effects.sensitivity.txt}, where dataset is the name of
+#' the file given as the first argument to catmap.  Note that repeated runs of
+#' the same input file will be appended to the default output file names.
+#' @param fe.senseplot Logical.  Should a .pdf plot of the ORs and CIs from the
+#' sensitivity analysis using fixed-effects be output?  Can be TRUE only if
+#' fe.sense=TRUE.  Output plot file is saved with the default name of
+#' \bold{dataset.fixed.effects. sensitivity.plot.pdf} where dataset is the name
+#' of the file given as the first argument to catmap.
+#' @param re.senseplot Logical.  Should a .pdf plot of the ORs and CIs from the
+#' sensitivity analysis using random-effects be output?  Can be TRUE only if
+#' re.sense=TRUE.  Output plot file is saved with the default name of
+#' \bold{dataset.random.effects. sensitivity.plot. pdf} where dataset is the
+#' name of the file given as the first argument to catmap.
+#' @author Kristin K. Nicodemus, \email{kristin.nicodemus@@well.ox.ac.uk}
+#' @seealso \code{\link{catmap}}, \code{\link{catmap.forest}},
+#' \code{\link{catmap.cumulative}}, \code{\link{catmap.funnel}}.
+#' @keywords methods
+#' @examples
+#'
+#' \dontrun{
+#' data(catmapdata)
+#' catmapobject1<-catmap(catmapdata, 0.95, TRUE)
+#' catmap.sense(catmapobject1, TRUE, TRUE, TRUE, TRUE)}
 catmap.sense<-function(catmapobject, fe.sense, re.sense, fe.senseplot, re.senseplot){
 
   #fixed-effects sensitivity
@@ -450,6 +569,59 @@ catmap.sense<-function(catmapobject, fe.sense, re.sense, fe.senseplot, re.sensep
   }
 }
 
+#' Cumulative Meta-Analyses and Plots using either Fixed- or Random-Effects
+#'
+#' \code{catmap.cumulative} conducts cumulative meta-analyses and creates plots
+#' of the ORs and confidence intervals using either fixed- or random-effects
+#' analyses, and saves text files and plot files to the current working
+#' directory (use getwd() to obtain the current working directory). The plots
+#' are not created in the R Graphics device.
+#'
+#' \code{catmap.cumulative} conducts cumulative meta-analyses and creates .pdf
+#' files of plots of the ORs and CIs using either the fixed-effect or the
+#' random-effect estimates.  \bold{NOTE: The studies should be listed in
+#' chronological order in the input file.  \code{catmap.cumulative} does not
+#' re-order studies by publication year.}
+#'
+#' @param catmapobject The catmap object created by a previous call to catmap
+#' @param fe.cumulative Logical.  Should a cumulative meta-analysis be
+#' performed using fixed-effects estimates?  catmap assumes the order in which
+#' the studies are listed is the chronological ordering.  Automatic output
+#' result file is saved with the default name of
+#' \bold{dataset.fixed.effects.cumulative .txt}, where dataset is the name of
+#' the file given as the first argument to catmap.  Note that repeated runs of
+#' the same input file will be appended to the default output file.
+#' @param re.cumulative Logical.  Should a cumulative meta-analysis be
+#' performed using random-effects estimates?  catmap assumes the order in which
+#' the studies are listed is the chronological ordering.  Automatic output
+#' result file is saved with the default name of
+#' \bold{dataset.random.effects.cumulative .txt}, where dataset is the name of
+#' the file given as the first argument to catmap.  Note that repeated runs of
+#' the same input file will be appended to the default output file.  Also note
+#' that random-effects estimates are undefined for a single study.  Therefore,
+#' the first study will have 0s and NaNs in the output, although the resulting
+#' plot shows the fixed-effect estimate for the first study.  The OR and CI for
+#' the first study may be found using the fixed effects estimates.
+#' @param fe.cumplot Logical.  Should a .pdf plot of the ORs and CIs from the
+#' cumulative meta-analysis using fixed-effects be output?  Can be TRUE only if
+#' fe.cumulative =TRUE.  Output plot file is saved with the default name of
+#' \bold{dataset.fixed. effects.cumulative.plot.pdf} where dataset is the name
+#' of the file given as the first argument to catmap.
+#' @param re.cumplot Logical.  Should a .pdf plot of the ORs and CIs from the
+#' cumulative meta-analysis using random-effects be output?  Can be TRUE only
+#' if re.cumulative= TRUE.  Output plot file is saved with the default name of
+#' \bold{dataset.random. effects .cumulative.plot.pdf} where dataset is the
+#' name of the file given as the first argument to catmap.
+#' @author Kristin K. Nicodemus, \email{kristin.nicodemus@@well.ox.ac.uk}
+#' @seealso \code{\link{catmap}}, \code{\link{catmap.forest}},
+#' \code{\link{catmap.sense}}, \code{\link{catmap.funnel}}.
+#' @keywords methods
+#' @examples
+#'
+#' \dontrun{
+#' data(catmapdata)
+#' catmapobject1<-catmap(catmapdata, 0.95, TRUE)
+#' catmap.cumulative(catmapobject1, TRUE, TRUE, TRUE, TRUE)}
 catmap.cumulative<-function(catmapobject, fe.cumulative, re.cumulative, fe.cumplot, re.cumplot){
 
   #fixed-effect cumulative meta analyses
@@ -699,8 +871,38 @@ catmap.cumulative<-function(catmapobject, fe.cumulative, re.cumulative, fe.cumpl
   }
 }
 
-# create fixed-effect forest plots
-
+#' Forest Plots using either Fixed- or Random-Effects Pooled ORs and CIs
+#'
+#' \code{catmap.forest} creates forest plots of the individual study ORs and
+#' CIs and the fixed or random effects pooled OR and CI and saves them to the
+#' current working directory (use getwd() to view cwd).  The plots are not
+#' created in the R Graphics device.
+#'
+#' \code{catmap.forest} creates forest plots of individual study ORs and CIs
+#' plus the pooled estimate of the fixed- or random-effects pooled OR and CI.
+#' Plots are not created in the R Graphics device window, but are instead saved
+#' to a .pdf file in the current working directory, which can be found using
+#' getwd()
+#'
+#' @param catmapobject The catmap object created by a previous call to catmap
+#' @param fe.forest Logical.  Should a forest plot be created using the
+#' fixed-effects estimates?  Plots are saved with the default name of
+#' \bold{dataset.fixed.effects.forest.pdf}, where dataset is the name of the
+#' file given as the first argument to catmap.
+#' @param re.forest Logical.  Should a forest plot be created using the
+#' random-effects estimates?  Plots are saved with the default name of
+#' \bold{dataset.random.effects. forest.pdf} where dataset is the name of the
+#' file given as the first argument to catmap.
+#' @author Kristin K. Nicodemus, \email{kristin.nicodemus@@well.ox.ac.uk}
+#' @seealso \code{\link{catmap}}, \code{\link{catmap.cumulative}},
+#' \code{\link{catmap.sense}}, \code{\link{catmap.funnel}}.
+#' @keywords methods
+#' @examples
+#'
+#' \dontrun{
+#' data(catmapdata)
+#' catmapobject1<-catmap(catmapdata, 0.95, TRUE)
+#' catmap.cumulative(catmapobject1, TRUE, TRUE, TRUE, TRUE)}
 catmap.forest<-function(catmapobject, fe.forest, re.forest){
   ci100<- catmapobject$ci*100
   if (fe.forest==TRUE){
@@ -793,8 +995,33 @@ catmap.forest<-function(catmapobject, fe.forest, re.forest){
   }
 }
 
-#funnel plot
-
+#' Funnel Plots for catmap
+#'
+#' \code{catmap.funnel} creates a funnel plot of the individual ORs against the
+#' se and saves the file to the current working directory (use getwd() to
+#' view).  The plots are not created in the R Graphics device.
+#'
+#' \code{catmap.funnel} creates a .pdf file of the funnel plot. Plots are not
+#' created in the R Graphics device window, but are instead saved to a .pdf
+#' file in the current working directory.
+#'
+#' @param catmapobject The catmap object created by a previous call to catmap
+#' @param funnel Logical.  Should a funnel plot be produced?  Funnel plots plot
+#' standard error of the log ORs against the ORs along with a solid line at 1.0
+#' and a dotted line at the overall pooled OR.  Used to assess publication
+#' bias.  Output plot file is saved with the default name of
+#' \bold{dataset.funnel.plot.pdf} where dataset is the name of the file given
+#' as the first argument to catmap.
+#' @author Kristin K. Nicodemus, \email{kristin.nicodemus@@well.ox.ac.uk}
+#' @seealso \code{\link{catmap}}, \code{\link{catmap.sense}},
+#' \code{\link{catmap.cumulative}}, \code{\link{catmap.forest}}.
+#' @keywords methods
+#' @examples
+#'
+#' \dontrun{
+#' data(catmapdata)
+#' catmapobject1<-catmap(catmapdata, 0.95, TRUE)
+#' catmap.funnel(catmapobject1, TRUE)}
 catmap.funnel<-function(catmapobject, funnel){
   if(funnel==TRUE){
     if(catmapobject$dataset!=catmapdata){
