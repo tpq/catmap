@@ -6,7 +6,7 @@
 \alias{catmap-package}
 \title{catmap: Case-control And TDT Meta-Analysis Package}
 \usage{
-catmap(dataset, ci = 0.95, printout = TRUE, print.all = FALSE)
+catmap(dataset, ci = 0.95, printout = TRUE)
 }
 \arguments{
 \item{dataset}{A text file containing a header with the following column
@@ -25,10 +25,6 @@ random-effects models and Q statistic results be saved to the current
 working directory?  Output files are saved with the default name of
 \bold{dataset.output.txt} where dataset is the name of the file given as the
 first argument to catmap.  Default = TRUE.}
-
-\item{print.all}{Logical.  Should individual-study ORs, CIs and weights be
-printed to screen and appended to \bold{dataset.output.txt}?  Default =
-FALSE.}
 }
 \description{
 \code{catmap} is an R package that conducts fixed-effects (inverse variance)
@@ -62,9 +58,8 @@ will get a printout of the entire contents to screen}
 
 \dontrun{
 data(catmapdata)
-#Incorrect usage: catmap(catmapdata, 0.95, TRUE, TRUE)
-#Correct usage:
-catmapobject1<-catmap(catmapdata, 0.95, TRUE, TRUE)}
+catmapobject <- catmap(catmapdata, 0.95, TRUE)
+}
 }
 \seealso{
 \code{\link{catmap.forest}}, \code{\link{catmap.sense}},
