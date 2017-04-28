@@ -1,59 +1,49 @@
-#' catmap: Case-control And TDT Meta-Analysis Package
+#' catmap: Case-Control and TDT Meta-Analysis Package
 #'
-#' \code{catmap} is an R package that conducts fixed-effects (inverse variance)
-#' and random-effects (DerSimonian and Laird, 1986) meta-analyses of
-#' case-control or family-based (TDT) genetic data; in addition, it performs
-#' meta-analyses combining these two types of study designs.  The fixed-effects
-#' model was first described by Kazeem and Farrall (2005); the random-effects
-#' model is described in Nicodemus (submitted) and saves a text file to the
-#' current working directory of all results printed to screen (use getwd() to
-#' find cwd).
+#' This package conducts fixed-effects (with inverse variance weighting) and
+#'  random-effects [DerSimonian and Laird (1986)] meta-analyses of case-control
+#'  or family-based (TDT) genetic data. In addition, catmap performs
+#'  meta-analyses which combine these two types of study designs. Specifically,
+#'  this package implements a fixed-effects model [Kazeem and Farrall (2005)]
+#'  and a random-effects model [Nicodemus (2008)] for combined studies.
 #'
-#' catmap is an R package that conducts fixed-effects (inverse variance) and
-#' random-effects (DerSimonian and Laird, 1986) meta-analyses of case-control
-#' or family-based (TDT) genetic data; in addition, it performs meta-analyses
-#' combining these two types of study designs.  The fixed-effects model was
-#' first described by Kazeem and Farrall (2005); the random-effects model is
-#' described in Nicodemus (submitted). Cumulative meta-analyses over time and
-#' leave-one-out sensitivity analyses may be performed using either fixed- or
-#' random-effects estimates or both estimates may be calculated; both produce a
-#' .txt file and an optional .pdf plot as output. A funnel plot graphic is
-#' implemented; however, no formal test of publication bias is available (see
-#' Ioannidis & Trikalinos, 2007). If users request a file to be created
-#' containing the results the file will be saved to the current working
-#' directory, which users can find by using >getwd(). \bold{Note that a catmap
-#' object must be created on the first call to catmap. If you do not create a
-#' catmap object you will not be able to use any of the other functions AND you
-#' will get a printout of the entire contents to screen}
+#' Use the output of the \code{catmap} function to generate figures using
+#'  secondary functions. These secondary functions produce output as either
+#'  a txt file, a pdf plot, or both.
 #'
-#' @name catmap
-#' @docType package
-#' @param dataset A text file containing a header with the following column
-#' names: \bold{name, study, t, nt, caserisk, controlrisk, casenotrisk,
-#' controlnotrisk} in tab-delimited format.  Note that the header must be
-#' exactly as specified and that all cells in the table must have an entry,
-#' even if the entry is 0 or missing (NA).  See for example: data(catmapdata).
-#' \bold{The dataset argument to catmap should be either the example data or a
-#' file containing the data for catmap, not an R object.}
-#' @param ci The confidence level for confidence intervals; 0 < ci < 1.  The
-#' default is 0.95
-#' @param printout Logical.  Should a text file of the fixed- and
-#' random-effects models and Q statistic results be saved to the current
-#' working directory?  Output files are saved with the default name of
-#' \bold{dataset.output.txt} where dataset is the name of the file given as the
-#' first argument to catmap.  Default = TRUE.
-#' @author Kristin K. Nicodemus, \email{kristin.nicodemus@@well.ox.ac.uk}
-#' @seealso \code{\link{catmap.forest}}, \code{\link{catmap.sense}},
-#' \code{\link{catmap.cumulative}}, \code{\link{catmap.funnel}}.
-#' @keywords methods
+#' A standard forest plot is available via \code{\link{catmap.forest}}.
+#'  A funnel plot is available via \code{\link{catmap.funnel}}. However,
+#'  no formal test of publication bias is available (see
+#'  [Ioannidis and Trikalinos (2007)]).
+#'
+#' In addition, cumulative meta-analyses over time (\code{\link{catmap.cumulative}})
+#'  and leave-one-out sensitivity analyses (\code{\link{catmap.sense}}) are
+#'  available for the fixed-effects estimates and random-effects estimates.
+#'
+#' @param dataset A \code{data.frame}, \code{matrix}, or file location.
+#'  The input should have the following column names: name, study, t, nt,
+#'  caserisk, controlrisk, casenotrisk, controlnotrisk. For a file location,
+#'  provide the data in a tab-delimited format. Note that the header must have
+#'  these exact columns and all cells in the table must have an entry, even
+#'  if the entry is 0 or NA. See \code{\link{catmapdata}} for an example.
+#' @param ci A numeric value. The confidence level for confidence intervals;
+#'  0 < ci < 1.
+#' @param printout A boolean. Toggles whether a text file of the models
+#'  and Q statistic results should get saved to the working directory.
+#'
+#' @author Algorithm designed and implemented by Kristin K. Nicodemus.
+#'  Code modified and updated by Thom Quinn.
+#' @seealso \code{\link{catmap}}, \code{\link{catmap.forest}},
+#'  \code{\link{catmap.sense}}, \code{\link{catmap.cumulative}},
+#'  \code{\link{catmap.funnel}}
+#'
 #' @examples
-#'
 #' \dontrun{
 #' data(catmapdata)
 #' catmapobject <- catmap(catmapdata, 0.95, TRUE)
 #' }
 #' @export
-catmap<-function(dataset, ci = 0.95, printout = TRUE){
+catmap <- function(dataset, ci = 0.95, printout = TRUE){
 
   options(warn = -1)
 

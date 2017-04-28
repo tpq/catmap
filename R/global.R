@@ -22,7 +22,9 @@
 #' }\item{casenotrisk:}{ a numeric vector containing counts of non-risk alleles in cases
 #' }\item{controlnotrisk:}{ a numeric vector containing counts of non-risk alleles in controls
 #'  }}
-#' @author Kristin K. Nicodemus
+#'
+#' @author Algorithm designed and implemented by Kristin K. Nicodemus.
+#'  Code modified and updated by Thom Quinn.
 #' @seealso \code{\link{catmap}}, \code{\link{catmap.forest}},
 #'  \code{\link{catmap.sense}}, \code{\link{catmap.cumulative}},
 #'  \code{\link{catmap.funnel}}

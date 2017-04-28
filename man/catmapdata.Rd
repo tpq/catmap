@@ -35,6 +35,7 @@ An example data set for use with \code{catmap}. All input data should
  \code{\link{catmap.funnel}}
 }
 \author{
-Kristin K. Nicodemus
+Algorithm designed and implemented by Kristin K. Nicodemus.
+ Code modified and updated by Thom Quinn.
 }
 \keyword{datasets}
