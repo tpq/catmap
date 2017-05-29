@@ -38,10 +38,8 @@
 #'  \code{\link{catmap.funnel}}
 #'
 #' @examples
-#' \dontrun{
 #' data(catmapdata)
 #' catmapobject <- catmap(catmapdata, 0.95, TRUE)
-#' }
 #' @export
 catmap <- function(dataset, ci = 0.95, printout = TRUE){
 

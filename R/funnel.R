@@ -20,11 +20,9 @@
 #' \code{\link{catmap.cumulative}}, \code{\link{catmap.forest}}.
 #' @keywords methods
 #' @examples
-#'
-#' \dontrun{
 #' data(catmapdata)
-#' catmapobject1<-catmap(catmapdata, 0.95, TRUE)
-#' catmap.funnel(catmapobject1, TRUE)}
+#' catmapobject <- catmap(catmapdata, 0.95, TRUE)
+#' catmap.funnel(catmapobject, TRUE)
 #' @export
 catmap.funnel<-function(catmapobject, funnel){
   if(funnel==TRUE){

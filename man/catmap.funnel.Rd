@@ -27,11 +27,9 @@ created in the R Graphics device window, but are instead saved to a .pdf
 file in the current working directory.
 }
 \examples{
-
-\dontrun{
 data(catmapdata)
-catmapobject1<-catmap(catmapdata, 0.95, TRUE)
-catmap.funnel(catmapobject1, TRUE)}
+catmapobject <- catmap(catmapdata, 0.95, TRUE)
+catmap.funnel(catmapobject, TRUE)
 }
 \seealso{
 \code{\link{catmap}}, \code{\link{catmap.sense}},

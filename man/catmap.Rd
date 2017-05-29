@@ -43,10 +43,8 @@ In addition, cumulative meta-analyses over time (\code{\link{catmap.cumulative}}
  available for the fixed-effects estimates and random-effects estimates.
 }
 \examples{
-\dontrun{
 data(catmapdata)
 catmapobject <- catmap(catmapdata, 0.95, TRUE)
-}
 }
 \seealso{
 \code{\link{catmap}}, \code{\link{catmap.forest}},

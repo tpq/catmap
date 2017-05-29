@@ -52,11 +52,9 @@ directory. Likewise the .txt files of results will be saved to the current
 working directory. To find the current working directory, use getwd()
 }
 \examples{
-
-\dontrun{
 data(catmapdata)
-catmapobject1<-catmap(catmapdata, 0.95, TRUE)
-catmap.sense(catmapobject1, TRUE, TRUE, TRUE, TRUE)}
+catmapobject <- catmap(catmapdata, 0.95, TRUE)
+catmap.sense(catmapobject, TRUE, TRUE, TRUE, TRUE)
 }
 \seealso{
 \code{\link{catmap}}, \code{\link{catmap.forest}},

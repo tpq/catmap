@@ -42,11 +42,9 @@
 #' \code{\link{catmap.cumulative}}, \code{\link{catmap.funnel}}.
 #' @keywords methods
 #' @examples
-#'
-#' \dontrun{
 #' data(catmapdata)
-#' catmapobject1<-catmap(catmapdata, 0.95, TRUE)
-#' catmap.sense(catmapobject1, TRUE, TRUE, TRUE, TRUE)}
+#' catmapobject <- catmap(catmapdata, 0.95, TRUE)
+#' catmap.sense(catmapobject, TRUE, TRUE, TRUE, TRUE)
 #' @export
 catmap.sense<-function(catmapobject, fe.sense, re.sense, fe.senseplot, re.senseplot){
 
@@ -333,11 +331,9 @@ catmap.sense<-function(catmapobject, fe.sense, re.sense, fe.senseplot, re.sensep
 #' \code{\link{catmap.sense}}, \code{\link{catmap.funnel}}.
 #' @keywords methods
 #' @examples
-#'
-#' \dontrun{
 #' data(catmapdata)
-#' catmapobject1<-catmap(catmapdata, 0.95, TRUE)
-#' catmap.cumulative(catmapobject1, TRUE, TRUE, TRUE, TRUE)}
+#' catmapobject <- catmap(catmapdata, 0.95, TRUE)
+#' catmap.cumulative(catmapobject, TRUE, TRUE, TRUE, TRUE)
 #' @export
 catmap.cumulative<-function(catmapobject, fe.cumulative, re.cumulative, fe.cumplot, re.cumplot){
 
@@ -615,11 +611,9 @@ catmap.cumulative<-function(catmapobject, fe.cumulative, re.cumulative, fe.cumpl
 #' \code{\link{catmap.sense}}, \code{\link{catmap.funnel}}.
 #' @keywords methods
 #' @examples
-#'
-#' \dontrun{
 #' data(catmapdata)
-#' catmapobject1<-catmap(catmapdata, 0.95, TRUE)
-#' catmap.cumulative(catmapobject1, TRUE, TRUE, TRUE, TRUE)}
+#' catmapobject <- catmap(catmapdata, 0.95, TRUE)
+#' catmap.forest(catmapobject, TRUE, TRUE)
 #' @export
 catmap.forest<-function(catmapobject, fe.forest, re.forest){
   ci100<- catmapobject$ci*100

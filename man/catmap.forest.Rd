@@ -33,11 +33,9 @@ to a .pdf file in the current working directory, which can be found using
 getwd()
 }
 \examples{
-
-\dontrun{
 data(catmapdata)
-catmapobject1<-catmap(catmapdata, 0.95, TRUE)
-catmap.cumulative(catmapobject1, TRUE, TRUE, TRUE, TRUE)}
+catmapobject <- catmap(catmapdata, 0.95, TRUE)
+catmap.forest(catmapobject, TRUE, TRUE)
 }
 \seealso{
 \code{\link{catmap}}, \code{\link{catmap.cumulative}},

@@ -57,11 +57,9 @@ chronological order in the input file.  \code{catmap.cumulative} does not
 re-order studies by publication year.}
 }
 \examples{
-
-\dontrun{
 data(catmapdata)
-catmapobject1<-catmap(catmapdata, 0.95, TRUE)
-catmap.cumulative(catmapobject1, TRUE, TRUE, TRUE, TRUE)}
+catmapobject <- catmap(catmapdata, 0.95, TRUE)
+catmap.cumulative(catmapobject, TRUE, TRUE, TRUE, TRUE)
 }
 \seealso{
 \code{\link{catmap}}, \code{\link{catmap.forest}},
