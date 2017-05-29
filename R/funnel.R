@@ -4,7 +4,7 @@
 #'  against the standard error of the Log Odds Ratio. The vertical line indicates
 #'  the combined Log Odds Ratio. Per the \code{metafor} package, "A pseudo
 #'  confidence interval region is drawn around this value with bounds equal
-#'  to ± 1.96 SE".
+#'  to +/- 1.96 SE".
 #'
 #' @param catmapobject A catmap object created by \code{\link{catmap}}.
 #' @param funnel A boolean. Toggles whether the funnel plot should get saved
