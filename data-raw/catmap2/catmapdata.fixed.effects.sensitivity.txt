@@ -1,0 +1,85 @@
+Fixed Effects Sensitivity Analysis
+Study Removed = Peter,2002
+Inverse Variance Fixed-Effects OR
+3.92983
+Inverse Variance Fixed-Effects Lower Bound CI
+3.5101
+Inverse Variance Fixed-Effects Upper Bound CI
+4.39975
+Inverse Variance Fixed-Effects Chi-Square
+563.98019
+Inverse Variance Fixed-Effects p-value
+0
+Q Statistic (Heterogeneity) Chi-Square
+118.61479
+Q Statistic (Heterogeneity) p-value
+0
+
+Fixed Effects Sensitivity Analysis
+Study Removed = Abrams,2001
+Inverse Variance Fixed-Effects OR
+3.52731
+Inverse Variance Fixed-Effects Lower Bound CI
+3.16079
+Inverse Variance Fixed-Effects Upper Bound CI
+3.93633
+Inverse Variance Fixed-Effects Chi-Square
+507.08451
+Inverse Variance Fixed-Effects p-value
+0
+Q Statistic (Heterogeneity) Chi-Square
+175.40868
+Q Statistic (Heterogeneity) p-value
+0
+
+Fixed Effects Sensitivity Analysis
+Study Removed = Todd,2003
+Inverse Variance Fixed-Effects OR
+2.246
+Inverse Variance Fixed-Effects Lower Bound CI
+1.99214
+Inverse Variance Fixed-Effects Upper Bound CI
+2.53222
+Inverse Variance Fixed-Effects Chi-Square
+174.82169
+Inverse Variance Fixed-Effects p-value
+0
+Q Statistic (Heterogeneity) Chi-Square
+141.93488
+Q Statistic (Heterogeneity) p-value
+0
+
+Fixed Effects Sensitivity Analysis
+Study Removed = Yu,2007
+Inverse Variance Fixed-Effects OR
+2.41044
+Inverse Variance Fixed-Effects Lower Bound CI
+2.12065
+Inverse Variance Fixed-Effects Upper Bound CI
+2.73983
+Inverse Variance Fixed-Effects Chi-Square
+181.24646
+Inverse Variance Fixed-Effects p-value
+0
+Q Statistic (Heterogeneity) Chi-Square
+196.61118
+Q Statistic (Heterogeneity) p-value
+0
+
+Fixed Effects Sensitivity Analysis
+Study Removed = Wei,2007
+Inverse Variance Fixed-Effects OR
+3.1118
+Inverse Variance Fixed-Effects Lower Bound CI
+2.80026
+Inverse Variance Fixed-Effects Upper Bound CI
+3.458
+Inverse Variance Fixed-Effects Chi-Square
+444.86392
+Inverse Variance Fixed-Effects p-value
+0
+Q Statistic (Heterogeneity) Chi-Square
+227.34549
+Q Statistic (Heterogeneity) p-value
+0
+
