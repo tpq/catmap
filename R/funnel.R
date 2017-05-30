@@ -21,7 +21,7 @@
 #' catmapobject <- catmap(catmapdata, 0.95, TRUE)
 #' catmap.funnel(catmapobject, TRUE)
 #' @export
-catmap.funnel<-function(catmapobject, funnel = FALSE){
+catmap.funnel <- function(catmapobject, funnel = FALSE){
 
   # The original catmap.funnel function plotted SE of Log OR
   #  against exp(Log OR), using $combinedOR as reference line

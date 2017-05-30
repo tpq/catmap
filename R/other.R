@@ -1,123 +1,95 @@
-#' Leave-One-Out Sensitivity Analyses and Plots using either Fixed- or
-#' Random-Effects Estimates
+#' catmap: Leave-One-Out Sensitivity Analysis
 #'
-#' \code{catmap.sense} conducts leave-one-out sensitivity analyses and creates
-#' plots of the ORs and confidence intervals using either fixed- or
-#' random-effects analyses, which are saved to the current working directory
-#' (use getwd() to view) but does not create the plots in the R Graphics
-#' device.
+#' The \code{catmap.sense} conducts leave-one-out sensitivity analysis
+#'  and creates plots of Odds Ratios (OR) and Confidence Intervals (CI)
+#'  using a fixed-effects or random-effects model.
 #'
-#' \code{catmap.sense} conducts leave-one-out sensitivity analyses and creates
-#' .pdf files of plots of the ORs and CIs using either the fixed-effect or the
-#' random-effect estimates. Plots are not created in the R Graphics device
-#' window, but are instead saved to a .pdf file in the current working
-#' directory. Likewise the .txt files of results will be saved to the current
-#' working directory. To find the current working directory, use getwd()
+#' @inheritParams catmap.forest
+#' @param printout A boolean. Toggles whether a text file of the models
+#'  and Q statistic results should get saved to the working directory.
 #'
-#' @param catmapobject The catmap object created by a previous call to catmap
-#' @param fe.sense Logical.  Should a leave-one-out sensitivity analysis be
-#' performed using fixed-effects estimates?  Automatic output result files are
-#' saved with the default name of \bold{dataset.fixed.effects.sensitivity.txt},
-#' where dataset is the name of the file given as the first argument to catmap.
-#' Note that repeated runs of the same input file will be appended to the
-#' default output file names.
-#' @param re.sense Logical.  Should a leave-one-out sensitivity analysis be
-#' performed using random-effects estimates?  Automatic output result files are
-#' saved with the default name of
-#' \bold{dataset.random.effects.sensitivity.txt}, where dataset is the name of
-#' the file given as the first argument to catmap.  Note that repeated runs of
-#' the same input file will be appended to the default output file names.
-#' @param fe.senseplot Logical.  Should a .pdf plot of the ORs and CIs from the
-#' sensitivity analysis using fixed-effects be output?  Can be TRUE only if
-#' fe.sense=TRUE.  Output plot file is saved with the default name of
-#' \bold{dataset.fixed.effects. sensitivity.plot.pdf} where dataset is the name
-#' of the file given as the first argument to catmap.
-#' @param re.senseplot Logical.  Should a .pdf plot of the ORs and CIs from the
-#' sensitivity analysis using random-effects be output?  Can be TRUE only if
-#' re.sense=TRUE.  Output plot file is saved with the default name of
-#' \bold{dataset.random.effects. sensitivity.plot. pdf} where dataset is the
-#' name of the file given as the first argument to catmap.
-#' @author Kristin K. Nicodemus, \email{kristin.nicodemus@@well.ox.ac.uk}
+#' @author Algorithm designed and implemented by Kristin K. Nicodemus.
+#'  Code modified and updated by Thom Quinn.
 #' @seealso \code{\link{catmap}}, \code{\link{catmap.forest}},
-#' \code{\link{catmap.cumulative}}, \code{\link{catmap.funnel}}.
-#' @keywords methods
+#'  \code{\link{catmap.sense}}, \code{\link{catmap.cumulative}},
+#'  \code{\link{catmap.funnel}}
+#'
 #' @examples
 #' data(catmapdata)
 #' catmapobject <- catmap(catmapdata, 0.95, TRUE)
-#' catmap.sense(catmapobject, TRUE, TRUE, TRUE, TRUE)
+#' catmap.sense(catmapobject, TRUE, TRUE, TRUE)
 #' @export
-catmap.sense<-function(catmapobject, fe.sense, re.sense, fe.senseplot, re.senseplot){
+catmap.sense <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE, printout = FALSE){
 
-  #fixed-effects sensitivity
+  if(!fe.forest & !re.forest) par(ask = TRUE)
 
-  if (fe.sense==TRUE){
-    sfplot<-matrix(0,nrow(catmapobject$a1),3)
-    for(f in 1:nrow(catmapobject$a1)){
-      sf.weight<-catmapobject$weight[-f]
-      sf.logOR<-catmapobject$logOR[-f]
+  # Fixed-Effects Sensitivity Analysis
+  sfplot<-matrix(0,nrow(catmapobject$a1),3)
+  for(f in 1:nrow(catmapobject$a1)){
 
-      sf.combinedLogOR<-((sum(sf.weight*sf.logOR))/sum(sf.weight))
-      sf.combinedOR<-exp(sf.combinedLogOR)
-      sf.combinedSeLogOR<-(sqrt(1/sum(sf.weight)))
-      sf.combinedVarLogOR<-(1/sum(sf.weight))
-      sf.combinedChisq<-(((sf.combinedLogOR-0)^2)/sf.combinedVarLogOR)
-      sf.combinedValue<-pchisq(sf.combinedChisq, df=1)
-      sf.combinedPvalue<-(1-sf.combinedValue)
+    sf.weight<-catmapobject$weight[-f]
+    sf.logOR<-catmapobject$logOR[-f]
 
-      #get qnorm values
-      alpha<-(1-((1-catmapobject$ci)/2))
-      quantilenorm<-qnorm(alpha, 0, 1)
+    sf.combinedLogOR<-((sum(sf.weight*sf.logOR))/sum(sf.weight))
+    sf.combinedOR<-exp(sf.combinedLogOR)
+    sf.combinedSeLogOR<-(sqrt(1/sum(sf.weight)))
+    sf.combinedVarLogOR<-(1/sum(sf.weight))
+    sf.combinedChisq<-(((sf.combinedLogOR-0)^2)/sf.combinedVarLogOR)
+    sf.combinedValue<-pchisq(sf.combinedChisq, df=1)
+    sf.combinedPvalue<-(1-sf.combinedValue)
 
-      sf.lbci<-exp(sf.combinedLogOR-(quantilenorm*sf.combinedSeLogOR))
-      sf.ubci<-exp(sf.combinedLogOR+(quantilenorm*sf.combinedSeLogOR))
-      sf.combinedCI<-c(sf.lbci, sf.ubci)
-      sf.SeLogOR<-sqrt(sf.combinedVarLogOR)
-      sf.lbci<-exp(sf.logOR-(quantilenorm*sf.SeLogOR))
-      sf.ubci<-exp(sf.logOR+(quantilenorm*sf.SeLogOR))
+    #get qnorm values
+    alpha<-(1-((1-catmapobject$ci)/2))
+    quantilenorm<-qnorm(alpha, 0, 1)
 
-      #calculate heterogeneity
-      sf.chisqHet<-(sum(sf.weight*(((sf.logOR-sf.combinedLogOR)^2))))
-      sf.df<-(nrow(catmapobject$a1)-2)
-      sf.combinedHetValue<-pchisq(sf.chisqHet, df=sf.df)
-      sf.heterogeneityPvalue<-(1-sf.combinedHetValue)
+    sf.lbci<-exp(sf.combinedLogOR-(quantilenorm*sf.combinedSeLogOR))
+    sf.ubci<-exp(sf.combinedLogOR+(quantilenorm*sf.combinedSeLogOR))
+    sf.combinedCI<-c(sf.lbci, sf.ubci)
+    sf.SeLogOR<-sqrt(sf.combinedVarLogOR)
+    sf.lbci<-exp(sf.logOR-(quantilenorm*sf.SeLogOR))
+    sf.ubci<-exp(sf.logOR+(quantilenorm*sf.SeLogOR))
 
-      study.removed<-paste("Study Removed =", catmapobject$studyname[f], sep=" ")
-      sftable.header<-c("Inverse Variance Fixed-Effects OR", "Inverse Variance Fixed-Effects Lower Bound CI", "Inverse Variance Fixed-Effects Upper Bound CI", "Inverse Variance Fixed-Effects Chi-Square", "Inverse Variance Fixed-Effects p-value", "Q Statistic (Heterogeneity) Chi-Square", "Q Statistic (Heterogeneity) p-value")
-      sftable.fill<-c(sf.combinedOR, sf.combinedCI, sf.combinedChisq, sf.combinedPvalue, sf.chisqHet, sf.heterogeneityPvalue)
-      sf.results<-rbind(sftable.header, round(sftable.fill, digits=5))
-      sfvalues<-c(sf.combinedOR, sf.combinedCI)
-      sfplot[f,]<-sfvalues
-      cat("Fixed Effects Sensitivity Analysis\n")
+    #calculate heterogeneity
+    sf.chisqHet<-(sum(sf.weight*(((sf.logOR-sf.combinedLogOR)^2))))
+    sf.df<-(nrow(catmapobject$a1)-2)
+    sf.combinedHetValue<-pchisq(sf.chisqHet, df=sf.df)
+    sf.heterogeneityPvalue<-(1-sf.combinedHetValue)
+
+    study.removed<-paste("Study Removed =", catmapobject$studyname[f], sep=" ")
+    sftable.header<-c("Inverse Variance Fixed-Effects OR", "Inverse Variance Fixed-Effects Lower Bound CI", "Inverse Variance Fixed-Effects Upper Bound CI", "Inverse Variance Fixed-Effects Chi-Square", "Inverse Variance Fixed-Effects p-value", "Q Statistic (Heterogeneity) Chi-Square", "Q Statistic (Heterogeneity) p-value")
+    sftable.fill<-c(sf.combinedOR, sf.combinedCI, sf.combinedChisq, sf.combinedPvalue, sf.chisqHet, sf.heterogeneityPvalue)
+    sf.results<-rbind(sftable.header, round(sftable.fill, digits=5))
+    sfvalues<-c(sf.combinedOR, sf.combinedCI)
+    sfplot[f,]<-sfvalues
+    cat("# Fixed-Effects Sensitivity Analysis\n")
+    cat(study.removed, sf.results, sep="\n")
+    cat("\n")
+
+    # Optional print-out of results
+    if(printout){
+      sink(paste0(catmapobject$dataset, ".fixed.effects.sensitivity.txt"), append = TRUE)
+      cat("# Fixed-Effects Sensitivity Analysis\n")
       cat(study.removed, sf.results, sep="\n")
       cat("\n")
-
-      #print results to file dataset.fixed.effects.sensitivity.txt
-
-      if(catmapobject$dataset!=catmapdata){
-        sink(paste(catmapobject$dataset, "fixed.effects.sensitivity.txt", sep="."), append=TRUE)
-        cat("Fixed Effects Sensitivity Analysis\n")
-        cat(study.removed, sf.results, sep="\n")
-        cat("\n")
-        sink()
-      }
-
-      if(catmapobject$dataset==catmapdata){
-        sink(paste("catmapdata", "fixed.effects.sensitivity.txt", sep="."), append=TRUE)
-        cat("Fixed Effects Sensitivity Analysis\n")
-        cat(study.removed, sf.results, sep="\n")
-        cat("\n")
-        sink()
-      }
+      sink()
     }
   }
 
-  #random-effects sensitivity
+  # Optional output of plot
+  if(fe.forest) pdf(file = paste0(catmapobject$dataset, "fixed.effects.sensitivity.plot.pdf"))
+  makeForest(catmapobject, main = "Sensitivity Analysis:\nInverse Variance (Fixed-Effects) ORs",
+             mean = sfplot[, 1], lower = sfplot[, 2], upper = sfplot[, 3],
+             study = paste("Study Removed:\n", catmapobject$studyname))
+  if(fe.forest) graphics.off()
 
-  if (re.sense==TRUE & catmapobject$tau2 <=0){
-    cat("NOTICE: tau2 is less than or equal to 0;\n no random effects estimates will be calculated.\n")
-  }
+  # Random-Effects Sensitivity Analysis
+  if(catmapobject$tau2 <= 0){
 
-  if (re.sense==TRUE & catmapobject$tau2 > 0){
+    message("NOTICE: tau2 is less than or equal to 0.\n",
+            " No random effects estimates calculated.\n")
+
+  }else{
+
     srplot<-matrix(0,nrow(catmapobject$a1),3)
     for(r in 1:nrow(catmapobject$a1)){
       sr.weight<-catmapobject$weight[-r]
@@ -174,113 +146,30 @@ catmap.sense<-function(catmapobject, fe.sense, re.sense, fe.senseplot, re.sensep
       sr.results<-rbind(srtable.header, round(srtable.fill, digits=5))
       srvalues<-c(srOR.dsl, srci.dsl)
       srplot[r,]<-srvalues
-      cat("Random Effects Sensitivity Analysis\n")
+      cat("# Random-Effects Sensitivity Analysis\n")
       cat(srstudy.removed, sr.results, sep="\n")
       cat("\n")
 
-      #print results to file dataset.random.effects.sensitivity.txt
-
-      if(catmapobject$dataset!=catmapdata){
-        sink(paste(catmapobject$dataset, "random.effects.sensitivity.txt", sep="."), append=TRUE)
-        cat("Random Effects Sensitivity Analysis\n")
-        cat(srstudy.removed, sr.results, sep="\n")
-        cat("\n")
-        sink()
-      }
-
-      if(catmapobject$dataset==catmapdata){
-        sink(paste("catmapdata", "random.effects.sensitivity.txt", sep="."), append=TRUE)
-        cat("Random Effects Sensitivity Analysis\n")
+      # Optional print-out of results
+      if(printout){
+        sink(paste0(catmapobject$dataset, "random.effects.sensitivity.txt"), append = TRUE)
+        cat("# Random-Effects Sensitivity Analysis\n")
         cat(srstudy.removed, sr.results, sep="\n")
         cat("\n")
         sink()
       }
     }
+
+    # Optional output of plot
+    if(re.forest) pdf(file = paste0(catmapobject$dataset, ".random.effects.sensitivity.plot.pdf"))
+    makeForest(catmapobject, main = "Sensitivity Analysis:\nDerSimonian & Laird (Random-Effects) ORs",
+               mean = srplot[, 1], lower = srplot[, 2], upper = srplot[, 3],
+               study = paste("Study Removed:\n", catmapobject$studyname))
+    if(re.forest) graphics.off()
   }
 
-  ci100<- catmapobject$ci*100
-
-  #create fixed-effects sensitivity plots
-  if (fe.sense==FALSE & fe.senseplot==TRUE){
-    cat("NOTICE: No fixed-efffects sensitivity analyses have been performed. \n Please set fe.sense==TRUE and try again.\n")
-  }
-
-  if (fe.senseplot==TRUE){
-    if(catmapobject$dataset!=catmapdata){
-      pdf(file=(paste(catmapobject$dataset, "fixed.effects.sensitivity.plot.pdf", sep=".")))
-    }
-    if(catmapobject$dataset==catmapdata){
-      pdf(file=(paste("catmapdata", "fixed.effects.sensitivity.plot.pdf", sep=".")))
-    }
-    sfpstudy<-c(1:nrow(catmapobject$a1))
-    sfplx<-max((min(sfplot[,2])-0.25),0)
-    sfphx<-max(sfplot[,3])+0.25
-    sfply<-min(sfpstudy)-0.5
-    sfphy<-max(sfpstudy)+0.5
-    mar1<-c(5.1, 7.1, 4.1, 2.1)
-    las1<-1
-    par("las"=las1)
-    par("mar"=mar1)
-    sfpdummy<-c(rep(NA, length(sfpstudy)))
-    sfpdummy[1]<- sfphx
-    sfpdummy[2]<- sfplx
-    sfpydummy<-c(rep(NA, length(sfpstudy)))
-    sfpydummy[1]<- sfphy
-    sfpydummy[2]<- sfply
-    xtitle<-paste("OR(", ci100, "% CI)")
-    plot(sfpdummy, sfpydummy, type="n", log="x", ylab="", ylim=rev(c(sfply, sfphy)), yaxt="n", xlab=xtitle, main="Sensitivity Analysis: \n Inverse Variance (Fixed-Effects) ORs")
-    abline(v=1.0)
-    for(z in 1:nrow(catmapobject$a1)){
-      points(sfplot[z,1],sfpstudy[z], pch=22, bg="black", col="black")
-      segments(sfplot[z,2],sfpstudy[z],sfplot[z,3],sfpstudy[z], bg="black", col="black")
-      sfpstudyname<-paste("Study Removed:", catmapobject$studyname[z], sep="\n")
-      mtext(paste(sfpstudyname),side=2, at=sfpstudy[z], cex=0.80)
-    }
-    #dev.off()
-  }
-
-  ci100<- catmapobject$ci*100
-
-  #create random-effects sensitivity plots
-  if (re.sense==FALSE & re.senseplot==TRUE){
-    cat("NOTICE: No random-efffects sensitivity analyses have been performed. \n Please set re.sense==TRUE and try again.\n")
-  }
-  if(fe.senseplot==TRUE){
-    dev.off()
-  }
-  if (re.senseplot==TRUE & catmapobject$tau2 > 0){
-    if(catmapobject$dataset!=catmapdata){
-      pdf(file=(paste(catmapobject$dataset, "random.effects.sensitivity.plot.pdf", sep=".")))
-    }
-    if(catmapobject$dataset==catmapdata){
-      pdf(file=(paste("catmapdata", "random.effects.sensitivity.plot.pdf", sep=".")))
-    }
-    srpstudy<-c(1:nrow(catmapobject$a1))
-    srplx<-max((min(srplot[,2])-0.25),0)
-    srphx<-max(srplot[,3])+0.25
-    srply<-min(srpstudy)-0.5
-    srphy<-max(srpstudy)+0.5
-    mar1<-c(5.1, 7.1, 4.1, 2.1)
-    las1<-1
-    par("las"=las1)
-    par("mar"=mar1)
-    srpdummy<-c(rep(NA, length(srpstudy)))
-    srpdummy[1]<- srphx
-    srpdummy[2]<- srplx
-    srpydummy<-c(rep(NA, length(srpstudy)))
-    srpydummy[1]<- srphy
-    srpydummy[2]<- srply
-    xtitle<-paste("OR(", ci100, "% CI)")
-    plot(srpdummy, srpydummy, type="n", log="x", ylab="", ylim=rev(c(srply, srphy)), yaxt="n", xlab=xtitle, main="Sensitivity Analysis: \n DerSimonian & Laird (Random-Effects) ORs")
-    abline(v=1.0)
-    for(y in 1:nrow(catmapobject$a1)){
-      points(srplot[y,1],srpstudy[y], pch=22, bg="black", col="black")
-      segments(srplot[y,2],srpstudy[y],srplot[y,3],srpstudy[y], bg="black", col="black")
-      srpstudyname<-paste("Study Removed:", catmapobject$studyname[y], sep="\n")
-      mtext(paste(srpstudyname),side=2, at=srpstudy[y], cex=0.80)
-    }
-    graphics.off()
-  }
+  if(!fe.forest & !re.forest) par(ask = FALSE)
+  return(TRUE)
 }
 
 #' Cumulative Meta-Analyses and Plots using either Fixed- or Random-Effects
