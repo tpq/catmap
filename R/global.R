@@ -88,7 +88,7 @@ makeForest <- function(catmapobject, summary = "", main = "Main Title", mean = e
 
   f <- forestplot::forestplot(
     labeltext = tex, mean = dat$mean, lower = dat$lower, upper = dat$upper,
-    graph.pos = 2, zero = 1, is.summary = summaryv, xlog = TRUE,
+    graph.pos = 2, zero = 1, is.summary = summaryv, xlog = TRUE, new_page = FALSE,
     col = forestplot::fpColors(box = "black", line = "grey", summary = "red"),
     title = main
   )

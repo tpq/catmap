@@ -1,0 +1,100 @@
+# Fixed-Effects Cumulative Meta-Analysis
+Study Added = Peter,2002 
+Inverse Variance Fixed-Effects OR: 0.92641 
+Inverse Variance Fixed-Effects Lower Bound CI: 0.72722 
+Inverse Variance Fixed-Effects Upper Bound CI: 1.18016 
+Inverse Variance Fixed-Effects Chi-Square: 0.38297 
+Inverse Variance Fixed-Effects p-value: 0.53602 
+Q Statistic (Heterogeneity) Chi-Square: 0 
+Q Statistic (Heterogeneity) p-value: 1 
+
+# Fixed-Effects Cumulative Meta-Analysis
+Study Added = Abrams,2001 
+Inverse Variance Fixed-Effects OR: 0.99814 
+Inverse Variance Fixed-Effects Lower Bound CI: 0.83012 
+Inverse Variance Fixed-Effects Upper Bound CI: 1.20016 
+Inverse Variance Fixed-Effects Chi-Square: 0.00039 
+Inverse Variance Fixed-Effects p-value: 0.98418 
+Q Statistic (Heterogeneity) Chi-Square: 0.86733 
+Q Statistic (Heterogeneity) p-value: 0.35169 
+
+# Fixed-Effects Cumulative Meta-Analysis
+Study Added = Todd,2003 
+Inverse Variance Fixed-Effects OR: 2.4524 
+Inverse Variance Fixed-Effects Lower Bound CI: 2.14401 
+Inverse Variance Fixed-Effects Upper Bound CI: 2.80514 
+Inverse Variance Fixed-Effects Chi-Square: 171.16944 
+Inverse Variance Fixed-Effects p-value: 0 
+Q Statistic (Heterogeneity) Chi-Square: 195.91966 
+Q Statistic (Heterogeneity) p-value: 0 
+
+# Fixed-Effects Cumulative Meta-Analysis
+Study Added = Yu,2007 
+Inverse Variance Fixed-Effects OR: 3.1118 
+Inverse Variance Fixed-Effects Lower Bound CI: 2.80026 
+Inverse Variance Fixed-Effects Upper Bound CI: 3.458 
+Inverse Variance Fixed-Effects Chi-Square: 444.86392 
+Inverse Variance Fixed-Effects p-value: 0 
+Q Statistic (Heterogeneity) Chi-Square: 227.34549 
+Q Statistic (Heterogeneity) p-value: 0 
+
+# Fixed-Effects Cumulative Meta-Analysis
+Study Added = Wei,2007 
+Inverse Variance Fixed-Effects OR: 3.03514 
+Inverse Variance Fixed-Effects Lower Bound CI: 2.73984 
+Inverse Variance Fixed-Effects Upper Bound CI: 3.36226 
+Inverse Variance Fixed-Effects Chi-Square: 451.95912 
+Inverse Variance Fixed-Effects p-value: 0 
+Q Statistic (Heterogeneity) Chi-Square: 231.01883 
+Q Statistic (Heterogeneity) p-value: 0 
+
+# Fixed-Effects Cumulative Meta-Analysis
+Study Added = Peter,2002 
+Inverse Variance Fixed-Effects OR: 0.92641 
+Inverse Variance Fixed-Effects Lower Bound CI: 0.72722 
+Inverse Variance Fixed-Effects Upper Bound CI: 1.18016 
+Inverse Variance Fixed-Effects Chi-Square: 0.38297 
+Inverse Variance Fixed-Effects p-value: 0.53602 
+Q Statistic (Heterogeneity) Chi-Square: 0 
+Q Statistic (Heterogeneity) p-value: 1 
+
+# Fixed-Effects Cumulative Meta-Analysis
+Study Added = Abrams,2001 
+Inverse Variance Fixed-Effects OR: 0.99814 
+Inverse Variance Fixed-Effects Lower Bound CI: 0.83012 
+Inverse Variance Fixed-Effects Upper Bound CI: 1.20016 
+Inverse Variance Fixed-Effects Chi-Square: 0.00039 
+Inverse Variance Fixed-Effects p-value: 0.98418 
+Q Statistic (Heterogeneity) Chi-Square: 0.86733 
+Q Statistic (Heterogeneity) p-value: 0.35169 
+
+# Fixed-Effects Cumulative Meta-Analysis
+Study Added = Todd,2003 
+Inverse Variance Fixed-Effects OR: 2.4524 
+Inverse Variance Fixed-Effects Lower Bound CI: 2.14401 
+Inverse Variance Fixed-Effects Upper Bound CI: 2.80514 
+Inverse Variance Fixed-Effects Chi-Square: 171.16944 
+Inverse Variance Fixed-Effects p-value: 0 
+Q Statistic (Heterogeneity) Chi-Square: 195.91966 
+Q Statistic (Heterogeneity) p-value: 0 
+
+# Fixed-Effects Cumulative Meta-Analysis
+Study Added = Yu,2007 
+Inverse Variance Fixed-Effects OR: 3.1118 
+Inverse Variance Fixed-Effects Lower Bound CI: 2.80026 
+Inverse Variance Fixed-Effects Upper Bound CI: 3.458 
+Inverse Variance Fixed-Effects Chi-Square: 444.86392 
+Inverse Variance Fixed-Effects p-value: 0 
+Q Statistic (Heterogeneity) Chi-Square: 227.34549 
+Q Statistic (Heterogeneity) p-value: 0 
+
+# Fixed-Effects Cumulative Meta-Analysis
+Study Added = Wei,2007 
+Inverse Variance Fixed-Effects OR: 3.03514 
+Inverse Variance Fixed-Effects Lower Bound CI: 2.73984 
+Inverse Variance Fixed-Effects Upper Bound CI: 3.36226 
+Inverse Variance Fixed-Effects Chi-Square: 451.95912 
+Inverse Variance Fixed-Effects p-value: 0 
+Q Statistic (Heterogeneity) Chi-Square: 231.01883 
+Q Statistic (Heterogeneity) p-value: 0 
+

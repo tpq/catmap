@@ -1,0 +1,21 @@
+# Pooled Estimates
+Inverse Variance Fixed-Effects OR: 3.03514 
+Inverse Variance Fixed-Effects Lower Bound CI: 2.73984 
+Inverse Variance Fixed-Effects Upper Bound CI: 3.36226 
+Inverse Variance Fixed-Effects Chi-Square: 451.95912 
+Inverse Variance Fixed-Effects p-value: 0 
+Q Statistic (Heterogeneity) Chi-Square: 231.01883 
+Q Statistic (Heterogeneity) p-value: 0 
+DerSimonian & Laird Random-Effects OR: 2.31192 
+DerSimonian & Laird Random-Effects Lower Bound CI: 1.02905 
+DerSiminian & Laird Random-Effects Upper Bound CI: 5.19409 
+DerSimonian & Laird Random-Effects Chi-Square: 4.1181 
+DerSimonian & Laird Random-Effects p-value: 0.04243 
+
+# Individual Study Estimates
+        Study Fixed-Effects ORs Lower Bound CIs Upper Bound CIs Study Weights
+1  Peter,2002          0.926412       0.7272249        1.180157      65.54907
+2 Abrams,2001          1.106278       0.8324995        1.470092      47.51926
+3   Todd,2003          6.801727        5.589127        8.277408      99.63674
+4     Yu,2007          4.560721        3.846685        5.407299      132.5027
+5    Wei,2007           2.03125        1.330289        3.101564       21.4433
