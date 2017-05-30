@@ -1,4 +1,4 @@
-## catmap 1.6.1.9000
+## catmap 1.6.2
 ---------------------
 * Add unit tests for core functions
     * `test_catmap.R` unit tests complete and validated
