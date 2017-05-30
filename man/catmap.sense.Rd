@@ -20,7 +20,7 @@ to the current working directory.}
 and Q statistic results should get saved to the working directory.}
 }
 \description{
-The \code{catmap.sense} conducts leave-one-out sensitivity analysis
+The \code{catmap.sense} conducts leave-one-out sensitivity analyses
  and creates plots of Odds Ratios (OR) and Confidence Intervals (CI)
  using a fixed-effects or random-effects model.
 }

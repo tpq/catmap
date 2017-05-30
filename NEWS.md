@@ -8,8 +8,8 @@
 * Major revisions to forest plots
     * New `makeForest` function builds all forest figures
     * Modified `catmap.forest` to use `makeForest`
-    * [`catmap.cumulative`]
-    * [`catmap.sense`]
+    * Modified `catmap.cumulative` to use `makeForest`
+    * Modified `catmap.sense` to use `makeForest`
 
 ## catmap 1.6.1
 ---------------------

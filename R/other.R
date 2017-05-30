@@ -1,6 +1,6 @@
 #' catmap: Leave-One-Out Sensitivity Analysis
 #'
-#' The \code{catmap.sense} conducts leave-one-out sensitivity analysis
+#' The \code{catmap.sense} conducts leave-one-out sensitivity analyses
 #'  and creates plots of Odds Ratios (OR) and Confidence Intervals (CI)
 #'  using a fixed-effects or random-effects model.
 #'
@@ -56,8 +56,15 @@ catmap.sense <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE, pri
     sf.heterogeneityPvalue<-(1-sf.combinedHetValue)
 
     study.removed<-paste("Study Removed =", catmapobject$studyname[f], sep=" ")
-    sftable.header<-c("Inverse Variance Fixed-Effects OR", "Inverse Variance Fixed-Effects Lower Bound CI", "Inverse Variance Fixed-Effects Upper Bound CI", "Inverse Variance Fixed-Effects Chi-Square", "Inverse Variance Fixed-Effects p-value", "Q Statistic (Heterogeneity) Chi-Square", "Q Statistic (Heterogeneity) p-value")
-    sftable.fill<-c(sf.combinedOR, sf.combinedCI, sf.combinedChisq, sf.combinedPvalue, sf.chisqHet, sf.heterogeneityPvalue)
+    sftable.header<-c("Inverse Variance Fixed-Effects OR",
+                      "Inverse Variance Fixed-Effects Lower Bound CI",
+                      "Inverse Variance Fixed-Effects Upper Bound CI",
+                      "Inverse Variance Fixed-Effects Chi-Square",
+                      "Inverse Variance Fixed-Effects p-value",
+                      "Q Statistic (Heterogeneity) Chi-Square",
+                      "Q Statistic (Heterogeneity) p-value")
+    sftable.fill<-c(sf.combinedOR, sf.combinedCI, sf.combinedChisq, sf.combinedPvalue,
+                    sf.chisqHet, sf.heterogeneityPvalue)
     sf.results<-rbind(sftable.header, round(sftable.fill, digits=5))
     sfvalues<-c(sf.combinedOR, sf.combinedCI)
     sfplot[f,]<-sfvalues
@@ -76,7 +83,7 @@ catmap.sense <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE, pri
   }
 
   # Optional output of plot
-  if(fe.forest) pdf(file = paste0(catmapobject$dataset, "fixed.effects.sensitivity.plot.pdf"))
+  if(fe.forest) pdf(file = paste0(catmapobject$dataset, ".fixed.effects.sensitivity.plot.pdf"))
   makeForest(catmapobject, main = "Sensitivity Analysis:\nInverse Variance (Fixed-Effects) ORs",
              mean = sfplot[, 1], lower = sfplot[, 2], upper = sfplot[, 3],
              study = paste("Study Removed:\n", catmapobject$studyname))
@@ -122,12 +129,11 @@ catmap.sense <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE, pri
       sr.heterogeneityPvalue<-(1-sr.combinedHetValue)
 
       #DerSimonian and Laird random-effects sensitivity analysis
-
       sr.tau2<-((sr.chisqHet-sr.df)/(sum(sr.weight)-(sum(sr.weight^2)/(sum(sr.weight)))))
-
       if (sr.tau2 <=0){
         sr.tau2<-0
       }
+
       srweight.dsl<-(1/(sr.comvarlogOR+sr.tau2))
       srlogOR.dsl<-((sum(srweight.dsl*sr.logOR))/(sum(srweight.dsl)))
       srOR.dsl<-exp(srlogOR.dsl)
@@ -141,8 +147,15 @@ catmap.sense <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE, pri
       srpvalue.dsl<-(1-srvalue.dsl)
 
       srstudy.removed<-paste("Study Removed =", catmapobject$studyname[r], sep=" ")
-      srtable.header<-c("Q Statistic (Heterogeneity) Chi-Square", "Q Statistic (Heterogeneity) p-value", "DerSimonian & Laird Random-Effects OR", "DerSimonian & Laird Random-Effects Lower Bound CI", "DerSimonian & Laird Random-Effects Upper Bound CI", "DerSimonian & Laird Random-Effects Chi-Square", "DerSimonian & Laird Random-Effects p-value")
-      srtable.fill<-c(sr.chisqHet, sr.heterogeneityPvalue, srOR.dsl, srlbci.dsl, srubci.dsl, srchisq.dsl, srpvalue.dsl)
+      srtable.header<-c("Q Statistic (Heterogeneity) Chi-Square",
+                        "Q Statistic (Heterogeneity) p-value",
+                        "DerSimonian & Laird Random-Effects OR",
+                        "DerSimonian & Laird Random-Effects Lower Bound CI",
+                        "DerSimonian & Laird Random-Effects Upper Bound CI",
+                        "DerSimonian & Laird Random-Effects Chi-Square",
+                        "DerSimonian & Laird Random-Effects p-value")
+      srtable.fill<-c(sr.chisqHet, sr.heterogeneityPvalue, srOR.dsl, srlbci.dsl,
+                      srubci.dsl, srchisq.dsl, srpvalue.dsl)
       sr.results<-rbind(srtable.header, round(srtable.fill, digits=5))
       srvalues<-c(srOR.dsl, srci.dsl)
       srplot[r,]<-srvalues
@@ -152,7 +165,7 @@ catmap.sense <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE, pri
 
       # Optional print-out of results
       if(printout){
-        sink(paste0(catmapobject$dataset, "random.effects.sensitivity.txt"), append = TRUE)
+        sink(paste0(catmapobject$dataset, ".random.effects.sensitivity.txt"), append = TRUE)
         cat("# Random-Effects Sensitivity Analysis\n")
         cat(srstudy.removed, sr.results, sep="\n")
         cat("\n")
@@ -172,132 +185,108 @@ catmap.sense <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE, pri
   return(TRUE)
 }
 
-#' Cumulative Meta-Analyses and Plots using either Fixed- or Random-Effects
+#' catmap: Cumulative Meta-Analysis
 #'
-#' \code{catmap.cumulative} conducts cumulative meta-analyses and creates plots
-#' of the ORs and confidence intervals using either fixed- or random-effects
-#' analyses, and saves text files and plot files to the current working
-#' directory (use getwd() to obtain the current working directory). The plots
-#' are not created in the R Graphics device.
+#' The \code{catmap.cumulative} conducts cumulative meta-analyses
+#'  and creates plots of Odds Ratios (OR) and Confidence Intervals (CI)
+#'  using a fixed-effects or random-effects model. Note that studies
+#'  should be listed in chronological order in the input file! This
+#'  function does not re-order studies by publication year! Also
+#'  note that random-effects estimates are not defined for a single
+#'  (i.e., the first) study.
 #'
-#' \code{catmap.cumulative} conducts cumulative meta-analyses and creates .pdf
-#' files of plots of the ORs and CIs using either the fixed-effect or the
-#' random-effect estimates.  \bold{NOTE: The studies should be listed in
-#' chronological order in the input file.  \code{catmap.cumulative} does not
-#' re-order studies by publication year.}
+#' @inheritParams catmap.forest
+#' @param printout A boolean. Toggles whether a text file of the models
+#'  and Q statistic results should get saved to the working directory.
 #'
-#' @param catmapobject The catmap object created by a previous call to catmap
-#' @param fe.cumulative Logical.  Should a cumulative meta-analysis be
-#' performed using fixed-effects estimates?  catmap assumes the order in which
-#' the studies are listed is the chronological ordering.  Automatic output
-#' result file is saved with the default name of
-#' \bold{dataset.fixed.effects.cumulative .txt}, where dataset is the name of
-#' the file given as the first argument to catmap.  Note that repeated runs of
-#' the same input file will be appended to the default output file.
-#' @param re.cumulative Logical.  Should a cumulative meta-analysis be
-#' performed using random-effects estimates?  catmap assumes the order in which
-#' the studies are listed is the chronological ordering.  Automatic output
-#' result file is saved with the default name of
-#' \bold{dataset.random.effects.cumulative .txt}, where dataset is the name of
-#' the file given as the first argument to catmap.  Note that repeated runs of
-#' the same input file will be appended to the default output file.  Also note
-#' that random-effects estimates are undefined for a single study.  Therefore,
-#' the first study will have 0s and NaNs in the output, although the resulting
-#' plot shows the fixed-effect estimate for the first study.  The OR and CI for
-#' the first study may be found using the fixed effects estimates.
-#' @param fe.cumplot Logical.  Should a .pdf plot of the ORs and CIs from the
-#' cumulative meta-analysis using fixed-effects be output?  Can be TRUE only if
-#' fe.cumulative =TRUE.  Output plot file is saved with the default name of
-#' \bold{dataset.fixed. effects.cumulative.plot.pdf} where dataset is the name
-#' of the file given as the first argument to catmap.
-#' @param re.cumplot Logical.  Should a .pdf plot of the ORs and CIs from the
-#' cumulative meta-analysis using random-effects be output?  Can be TRUE only
-#' if re.cumulative= TRUE.  Output plot file is saved with the default name of
-#' \bold{dataset.random. effects .cumulative.plot.pdf} where dataset is the
-#' name of the file given as the first argument to catmap.
-#' @author Kristin K. Nicodemus, \email{kristin.nicodemus@@well.ox.ac.uk}
+#' @author Algorithm designed and implemented by Kristin K. Nicodemus.
+#'  Code modified and updated by Thom Quinn.
 #' @seealso \code{\link{catmap}}, \code{\link{catmap.forest}},
-#' \code{\link{catmap.sense}}, \code{\link{catmap.funnel}}.
-#' @keywords methods
+#'  \code{\link{catmap.sense}}, \code{\link{catmap.cumulative}},
+#'  \code{\link{catmap.funnel}}
+#'
 #' @examples
 #' data(catmapdata)
 #' catmapobject <- catmap(catmapdata, 0.95, TRUE)
-#' catmap.cumulative(catmapobject, TRUE, TRUE, TRUE, TRUE)
+#' catmap.cumulative(catmapobject, TRUE, TRUE, TRUE)
 #' @export
-catmap.cumulative<-function(catmapobject, fe.cumulative, re.cumulative, fe.cumplot, re.cumplot){
+catmap.cumulative <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE, printout = FALSE){
 
-  #fixed-effect cumulative meta analyses
-  ci100<- catmapobject$ci*100
+  if(!fe.forest & !re.forest) par(ask = TRUE)
 
-  if (fe.cumulative==TRUE){
+  # Fixed-Effects Sensitivity Analysis
+  ci100 <- catmapobject$ci*100
+  cfplot<-matrix(0, nrow(catmapobject$a1),3)
+  for(c in 1:nrow(catmapobject$a1)){
+    cf.weight<- catmapobject$weight[1:c]
+    cf.logOR<- catmapobject$logOR[1:c]
 
-    cfplot<-matrix(0, nrow(catmapobject$a1),3)
-    for(c in 1:nrow(catmapobject$a1)){
-      cf.weight<- catmapobject$weight[1:c]
-      cf.logOR<- catmapobject$logOR[1:c]
+    cf.combinedLogOR<-((sum(cf.weight*cf.logOR))/sum(cf.weight))
+    cf.combinedOR<-exp(cf.combinedLogOR)
+    cf.combinedSeLogOR<-(sqrt(1/sum(cf.weight)))
+    cf.combinedVarLogOR<-(1/sum(cf.weight))
+    cf.combinedChisq<-(((cf.combinedLogOR-0)^2)/cf.combinedVarLogOR)
+    cf.combinedValue<-pchisq(cf.combinedChisq, df=1)
+    cf.combinedPvalue<-(1-cf.combinedValue)
 
-      cf.combinedLogOR<-((sum(cf.weight*cf.logOR))/sum(cf.weight))
-      cf.combinedOR<-exp(cf.combinedLogOR)
-      cf.combinedSeLogOR<-(sqrt(1/sum(cf.weight)))
-      cf.combinedVarLogOR<-(1/sum(cf.weight))
-      cf.combinedChisq<-(((cf.combinedLogOR-0)^2)/cf.combinedVarLogOR)
-      cf.combinedValue<-pchisq(cf.combinedChisq, df=1)
-      cf.combinedPvalue<-(1-cf.combinedValue)
+    #get qnorm values
+    alpha<-(1-((1-catmapobject$ci)/2))
+    quantilenorm<-qnorm(alpha, 0, 1)
 
-      #get qnorm values
-      alpha<-(1-((1-catmapobject$ci)/2))
-      quantilenorm<-qnorm(alpha, 0, 1)
+    cf.lbci<-exp(cf.combinedLogOR-(quantilenorm*cf.combinedSeLogOR))
+    cf.ubci<-exp(cf.combinedLogOR+(quantilenorm*cf.combinedSeLogOR))
+    cf.combinedCI<-c(cf.lbci, cf.ubci)
+    cf.SeLogOR<-sqrt(cf.combinedVarLogOR)
+    cf.lbci<-exp(cf.logOR-(quantilenorm*cf.SeLogOR))
+    cf.ubci<-exp(cf.logOR+(quantilenorm*cf.SeLogOR))
 
-      cf.lbci<-exp(cf.combinedLogOR-(quantilenorm*cf.combinedSeLogOR))
-      cf.ubci<-exp(cf.combinedLogOR+(quantilenorm*cf.combinedSeLogOR))
-      cf.combinedCI<-c(cf.lbci, cf.ubci)
-      cf.SeLogOR<-sqrt(cf.combinedVarLogOR)
-      cf.lbci<-exp(cf.logOR-(quantilenorm*cf.SeLogOR))
-      cf.ubci<-exp(cf.logOR+(quantilenorm*cf.SeLogOR))
+    #calculate heterogeneity
+    cf.df<-(c-1)
+    cf.chisqHet<-(sum(cf.weight*(((cf.logOR-cf.combinedLogOR)^2))))
+    cf.combinedHetValue<-pchisq(cf.chisqHet, df=cf.df)
+    cf.heterogeneityPvalue<-(1-cf.combinedHetValue)
 
-      #calculate heterogeneity
-      cf.df<-(c-1)
-      cf.chisqHet<-(sum(cf.weight*(((cf.logOR-cf.combinedLogOR)^2))))
-      cf.combinedHetValue<-pchisq(cf.chisqHet, df=cf.df)
-      cf.heterogeneityPvalue<-(1-cf.combinedHetValue)
+    study.added<-paste("Study Added =", catmapobject$studyname[c], sep=" ")
+    cftable.header<-c("Inverse Variance Fixed-Effects OR",
+                      "Inverse Variance Fixed-Effects Lower Bound CI",
+                      "Inverse Variance Fixed-Effects Upper Bound CI",
+                      "Inverse Variance Fixed-Effects Chi-Square",
+                      "Inverse Variance Fixed-Effects p-value",
+                      "Q Statistic (Heterogeneity) Chi-Square",
+                      "Q Statistic (Heterogeneity) p-value")
+    cftable.fill<-c(cf.combinedOR, cf.combinedCI, cf.combinedChisq, cf.combinedPvalue,
+                    cf.chisqHet, cf.heterogeneityPvalue)
+    cf.results<-rbind(cftable.header, round(cftable.fill, digits=5))
+    cfvalues<-c(cf.combinedOR, cf.combinedCI)
+    cfplot[c,]<-cfvalues
+    cat("# Fixed-Effects Cumulative Meta-Analysis\n")
+    cat(study.added, cf.results, sep="\n")
+    cat("\n")
 
-      study.added<-paste("Study Added =", catmapobject$studyname[c], sep=" ")
-      cftable.header<-c("Inverse Variance Fixed-Effects OR", "Inverse Variance Fixed-Effects Lower Bound CI", "Inverse Variance Fixed-Effects Upper Bound CI", "Inverse Variance Fixed-Effects Chi-Square", "Inverse Variance Fixed-Effects p-value", "Q Statistic (Heterogeneity) Chi-Square", "Q Statistic (Heterogeneity) p-value")
-      cftable.fill<-c(cf.combinedOR, cf.combinedCI, cf.combinedChisq, cf.combinedPvalue, cf.chisqHet, cf.heterogeneityPvalue)
-      cf.results<-rbind(cftable.header, round(cftable.fill, digits=5))
-      cfvalues<-c(cf.combinedOR, cf.combinedCI)
-      cfplot[c,]<-cfvalues
-      cat("Fixed Effects Cumulative Meta-Analysis\n")
+    # Optional print-out of results
+    if(printout){
+      sink(paste0(catmapobject$dataset, ".fixed.effects.cumulative.txt"), append = TRUE)
+      cat("# Fixed-Effects Cumulative Meta-Analysis\n")
       cat(study.added, cf.results, sep="\n")
       cat("\n")
-
-      #print results to file dataset.fixed.effects.cumulative.txt
-
-      if(catmapobject$dataset!=catmapdata){
-        sink(paste(catmapobject$dataset, "fixed.effects.cumulative.txt", sep="."), append=TRUE)
-        cat("Fixed Effects Cumulative Meta-Analysis\n")
-        cat(study.added, cf.results, sep="\n")
-        cat("\n")
-        sink()
-      }
-
-      if(catmapobject$dataset==catmapdata){
-        sink(paste("catmapdata", "fixed.effects.cumulative.txt", sep="."), append=TRUE)
-        cat("Fixed Effects Cumulative Meta-Analysis\n")
-        cat(study.added, cf.results, sep="\n")
-        cat("\n")
-        sink()
-      }
+      sink()
     }
   }
 
-  #random-effect cumulative meta analyses
+  # Optional output of plot
+  if(fe.forest) pdf(file = paste0(catmapobject$dataset, ".fixed.effects.cumulative.plot.pdf"))
+  makeForest(catmapobject, main = "Cumulative Meta-Analysis:\nInverse Variance (Fixed-Effects) ORs",
+             mean = cfplot[, 1], lower = cfplot[, 2], upper = cfplot[, 3],
+             study = paste("Study Added:\n", catmapobject$studyname))
+  if(fe.forest) graphics.off()
 
-  if(re.cumulative==TRUE & catmapobject$tau2 <= 0){
-    cat("NOTICE: tau2 is less than or equal to 0;\n no random effects estimates will be calculated.\n")
-  }
+  # Random-Effects Sensitivity Analysis
+  if(catmapobject$tau2 <= 0){
 
-  if (re.cumulative==TRUE & catmapobject$tau2 > 0){
+    message("NOTICE: tau2 is less than or equal to 0.\n",
+            " No random effects estimates calculated.\n")
+
+  }else{
     crplot<-matrix(0,nrow(catmapobject$a1),3)
     for(u in 1:nrow(catmapobject$a1)){
       #v<-u-1
@@ -329,11 +318,8 @@ catmap.cumulative<-function(catmapobject, fe.cumulative, re.cumulative, fe.cumpl
       cr.heterogeneityPvalue<-(1-cr.combinedHetValue)
 
       #DerSimonian and Laird random-effects cumulative analysis
-
       cr.tau2c<-(cr.chisqHet-cr.df)/(sum(cr.weight)-(sum(cr.weight^2)/(sum(cr.weight))))
-
       cr.tau2<-max(0,cr.tau2c)
-
       #if (cr.tau2 <=0){
       #cr.tau2<-0
       #}
@@ -356,119 +342,43 @@ catmap.cumulative<-function(catmapobject, fe.cumulative, re.cumulative, fe.cumpl
       #crubci.dsl[1]<-catmapobject$ubci.fe[1]
 
       crstudy.added<-paste("Study Added =", catmapobject$studyname[u], sep=" ")
-      crtable.header<-c("Q Statistic (Heterogeneity) Chi-Square", "Q Statistic (Heterogeneity) p-value", "DerSimonian & Laird Random-Effects OR", "DerSimonian & Laird Random-Effects Lower Bound CI", "DerSimonian & Laird Random-Effects Upper Bound CI", "DerSimonian & Laird Random-Effects Chi-Square", "DerSimonian & Laird Random-Effects p-value")
-      crtable.fill<-c(cr.chisqHet, cr.heterogeneityPvalue, crOR.dsl, crlbci.dsl, crubci.dsl, crchisq.dsl, crpvalue.dsl)
+      crtable.header<-c("Q Statistic (Heterogeneity) Chi-Square",
+                        "Q Statistic (Heterogeneity) p-value",
+                        "DerSimonian & Laird Random-Effects OR",
+                        "DerSimonian & Laird Random-Effects Lower Bound CI",
+                        "DerSimonian & Laird Random-Effects Upper Bound CI",
+                        "DerSimonian & Laird Random-Effects Chi-Square",
+                        "DerSimonian & Laird Random-Effects p-value")
+      crtable.fill<-c(cr.chisqHet, cr.heterogeneityPvalue, crOR.dsl, crlbci.dsl,
+                      crubci.dsl, crchisq.dsl, crpvalue.dsl)
       cr.results<-rbind(crtable.header, round(crtable.fill, digits=5))
       crvalues<-c(crOR.dsl, crci.dsl)
       crplot[u,]<-crvalues
       crplot[1,1]<-exp(catmapobject$logOR[1])
       crplot[1,2]<-catmapobject$lbci.fe[1]
       crplot[1,3]<-catmapobject$ubci.fe[1]
-
-      cat("Random Effects Cumulative Meta-Analysis\n")
-      cat("The first study will NOT have estimates - this is because the random\neffects estimates are not defined for a single study\n")
-
+      cat("# Random-Effects Cumulative Meta-Analysis\n")
       cat(crstudy.added, cr.results, sep="\n")
       cat("\n")
 
-      #print results to file dataset.random.effects.cumulative.txt
-
-      if(catmapobject$dataset!=catmapdata){
-        sink(paste(catmapobject$dataset, "random.effects.cumulative.txt", sep="."), append=TRUE)
-        cat("Random Effects Cumulative Meta-Analysis\n")
-        cat("The first study will NOT have estimates - this is because the random\neffects estimates are not defined for a single study\n")
-        cat(crstudy.added, cr.results, sep="\n")
-        cat("\n")
-        sink()
-      }
-
-      if(catmapobject$dataset==catmapdata){
-        sink(paste("catmapdata", "random.effects.cumulative.txt", sep="."), append=TRUE)
-        cat("Random Effects Cumulative Meta-Analysis\n")
-        cat("The first study will NOT have estimates - this is because the random\neffects estimates are not defined for a single study\n")
+      # Optional print-out of results
+      if(printout){
+        sink(paste0(catmapobject$dataset, ".random.effects.cumulative.txt"), append = TRUE)
+        cat("# Random-Effects Cumulative Meta-Analysis\n")
         cat(crstudy.added, cr.results, sep="\n")
         cat("\n")
         sink()
       }
     }
+
+    # Optional output of plot
+    if(re.forest) pdf(file = paste0(catmapobject$dataset, ".random.effects.cumulative.plot.pdf"))
+    makeForest(catmapobject, main = "Cumulative Meta-Analysis:\nDerSimonian & Laird (Random-Effects) ORs",
+               mean = crplot[, 1], lower = crplot[, 2], upper = crplot[, 3],
+               study = paste("Study Added:\n", catmapobject$studyname))
+    if(re.forest) graphics.off()
   }
 
-  #create fixed-effects cumulative plots
-
-  if(fe.cumulative==FALSE & fe.cumplot==TRUE){
-    cat("NOTICE: No fixed-efffects cumulative analyses have been performed.\n Please set fe.cumulative==TRUE and try again.\n")
-  }
-
-  if (fe.cumplot==TRUE){
-    if(catmapobject$dataset!=catmapdata){
-      pdf(file=(paste(catmapobject$dataset, "fixed.effects.cumulative.plot.pdf", sep=".")))
-    }
-    if(catmapobject$dataset==catmapdata){
-      pdf(file=(paste("catmapdata", "fixed.effects.cumulative.plot.pdf", sep=".")))
-    }
-    cfpstudy<-c(1:nrow(catmapobject$a1))
-    cfplx<-max((min(cfplot[,2])-0.25),0.1)
-    cfphx<-max(cfplot[,3])+0.25
-    cfply<-1-0.5
-    cfphy<-max(cfpstudy)+0.5
-    mar1<-c(5.1, 7.1, 4.1, 2.1)
-    las1<-1
-    par("las"=las1)
-    par("mar"=mar1)
-    cfpdummy<-c(rep(NA, length(cfpstudy)))
-    cfpdummy[1]<- cfphx
-    cfpdummy[2]<- cfplx
-    cfpydummy<-c(rep(NA, length(cfpstudy)))
-    cfpydummy[1]<- cfphy
-    cfpydummy[2]<- cfply
-    xtitle<-paste("OR(", ci100, "% CI)")
-    plot(cfpdummy, cfpydummy, type="n", log="x", ylab="", ylim=rev(c(cfply, cfphy)), yaxt="n", xlab=xtitle, main="Cumulative Meta-Analysis: \n Inverse Variance (Fixed-Effects) ORs")
-    abline(v=1.0)
-    for(x in 1:nrow(catmapobject$a1)){
-      points(cfplot[x,1],cfpstudy[x], pch=22, bg="black", col="black")
-      segments(cfplot[x,2],cfpstudy[x],cfplot[x,3],cfpstudy[x], bg="black", col="black")
-      cfpstudyname<-paste("Study Added:", catmapobject$studyname[x], sep="\n")
-      mtext(paste(cfpstudyname),side=2, at=cfpstudy[x], cex=0.80)
-    }
-    dev.off()
-  }
-
-  #create random-effects cumulative plots
-  if(re.cumulative==FALSE & re.cumplot==TRUE){
-    cat("NOTICE: No random-efffects cumulative analyses have been performed. \n Please set re.cumulative==TRUE and try again.\n")
-  }
-  if (re.cumplot==TRUE & catmapobject$tau2 > 0){
-    if(catmapobject$dataset!=catmapdata){
-      pdf(file=(paste(catmapobject$dataset, "random.effects.cumulative.plot.pdf", sep=".")))
-    }
-    if(catmapobject$dataset==catmapdata){
-      pdf(file=(paste("catmapdata", "random.effects.cumulative.plot.pdf", sep=".")))
-    }
-    crpstudy<-c(1:nrow(catmapobject$a1))
-    crplx<-max((min(crplot[,2])-0.25),0.1)
-    crphx<-max(crplot[,3])+0.25
-    #crply<-min(crpstudy)-0.5
-    crply<-1-0.5
-    crphy<-max(crpstudy)+0.5
-    mar1<-c(5.1, 7.1, 4.1, 2.1)
-    las1<-1
-    par("las"=las1)
-    par("mar"=mar1)
-    crpdummy<-c(rep(NA, length(crpstudy)))
-    crpdummy[1]<- crphx
-    crpdummy[2]<- crplx
-    crpydummy<-c(rep(NA, length(crpstudy)))
-    crpydummy[1]<- crphy
-    crpydummy[2]<- crply
-    xtitle<-paste("OR (", ci100, "% CI)")
-    plot(crpdummy, crpydummy, type="n", log="x", ylab="", ylim=rev(c(crply, crphy)), yaxt="n", xlab=xtitle, main="Cumulative Meta-Analysis: \n DerSimonian & Laird (Random-Effects) ORs")
-    abline(v=1.0)
-    for(w in 1:nrow(catmapobject$a1)){
-      points(crplot[w,1],crpstudy[w], pch=22, bg="black", col="black")
-      segments(crplot[w,2],crpstudy[w],crplot[w,3],crpstudy[w], bg="black", col="black")
-      crpstudyname<-paste("Study Added:", catmapobject$studyname[w], sep="\n")
-      mtext(paste(crpstudyname),side=2, at=crpstudy[w], cex=0.80)
-    }
-    graphics.off()
-  }
+  if(!fe.forest & !re.forest) par(ask = FALSE)
+  return(TRUE)
 }
