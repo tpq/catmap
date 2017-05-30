@@ -2,35 +2,23 @@
 % Please edit documentation in R/forest.R
 \name{catmap.forest}
 \alias{catmap.forest}
-\title{Forest Plots using either Fixed- or Random-Effects Pooled ORs and CIs}
+\title{catmap: Forest Plot}
 \usage{
-catmap.forest(catmapobject, fe.forest, re.forest)
+catmap.forest(catmapobject, fe.forest = FALSE, re.forest = FALSE)
 }
 \arguments{
-\item{catmapobject}{The catmap object created by a previous call to catmap}
+\item{catmapobject}{A catmap object created by \code{\link{catmap}}.}
 
-\item{fe.forest}{Logical.  Should a forest plot be created using the
-fixed-effects estimates?  Plots are saved with the default name of
-\bold{dataset.fixed.effects.forest.pdf}, where dataset is the name of the
-file given as the first argument to catmap.}
+\item{fe.forest}{A boolean. Toggles whether the forest plot should get saved
+to the current working directory.}
 
-\item{re.forest}{Logical.  Should a forest plot be created using the
-random-effects estimates?  Plots are saved with the default name of
-\bold{dataset.random.effects. forest.pdf} where dataset is the name of the
-file given as the first argument to catmap.}
+\item{re.forest}{A boolean. Toggles whether the forest plot should get saved
+to the current working directory.}
 }
 \description{
-\code{catmap.forest} creates forest plots of the individual study ORs and
-CIs and the fixed or random effects pooled OR and CI and saves them to the
-current working directory (use getwd() to view cwd).  The plots are not
-created in the R Graphics device.
-}
-\details{
-\code{catmap.forest} creates forest plots of individual study ORs and CIs
-plus the pooled estimate of the fixed- or random-effects pooled OR and CI.
-Plots are not created in the R Graphics device window, but are instead saved
-to a .pdf file in the current working directory, which can be found using
-getwd()
+The \code{catmap.forest} creates forest plots of the individual study
+ Odds Ratios (OR) and Confidence Intervals (CI). It then summarizes the
+ data using a fixed-effects or random-effects pooled OR and CI.
 }
 \examples{
 data(catmapdata)
@@ -38,10 +26,11 @@ catmapobject <- catmap(catmapdata, 0.95, TRUE)
 catmap.forest(catmapobject, TRUE, TRUE)
 }
 \seealso{
-\code{\link{catmap}}, \code{\link{catmap.cumulative}},
-\code{\link{catmap.sense}}, \code{\link{catmap.funnel}}.
+\code{\link{catmap}}, \code{\link{catmap.forest}},
+ \code{\link{catmap.sense}}, \code{\link{catmap.cumulative}},
+ \code{\link{catmap.funnel}}
 }
 \author{
-Kristin K. Nicodemus, \email{kristin.nicodemus@well.ox.ac.uk}
+Algorithm designed and implemented by Kristin K. Nicodemus.
+ Code modified and updated by Thom Quinn.
 }
-\keyword{methods}
