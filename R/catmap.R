@@ -41,7 +41,7 @@
 #' data(catmapdata)
 #' catmapobject <- catmap(catmapdata, 0.95, TRUE)
 #' @export
-catmap <- function(dataset, ci = 0.95, printout = TRUE){
+catmap <- function(dataset, ci = 0.95, printout = FALSE){
 
   options(warn = -1)
 

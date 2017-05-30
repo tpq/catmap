@@ -1,6 +1,6 @@
 Package: catmap
 Title: Case-Control and TDT Meta-Analysis Package
-Version: 1.6.0.9000
+Version: 1.6.1.9000
 URL: http://github.com/tpq/catmap
 BugReports: http://github.com/tpq/catmap/issues
 Authors@R: c(
@@ -21,4 +21,8 @@ Depends:
     R (>= 2.10),
     stats
 Suggests:
-    knitr
+    knitr,
+    testthat
+Imports:
+    forestplot,
+    metafor

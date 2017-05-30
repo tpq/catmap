@@ -4,7 +4,7 @@
 \alias{catmap}
 \title{catmap: Case-Control and TDT Meta-Analysis Package}
 \usage{
-catmap(dataset, ci = 0.95, printout = TRUE)
+catmap(dataset, ci = 0.95, printout = FALSE)
 }
 \arguments{
 \item{dataset}{A \code{data.frame}, \code{matrix}, or file location.
