@@ -35,3 +35,69 @@
 #' @importFrom stats pchisq qnorm
 #' @importFrom utils read.table
 NULL
+
+#' Make Forest Plot
+#'
+#' A back-end wrapper function used to make forest plots.
+#'
+#' @inheritParams catmap.funnel
+#' @param summary A character string. The kind of summary statistic
+#'  to plot. Select from "fixed" or "random".
+#' @param mean,lower,upper,studyname Numeric or character vectors.
+#'  Used to guide the construction of the forest plot.
+#' @param main A character string. The figure title.
+makeForest <- function(catmapobject, summary = "", main = "Main Title", mean = exp(catmapobject$logOR),
+                       lower = catmapobject$lbci.fe, upper = catmapobject$ubci.fe,
+                       studyname = catmapobject$studyname){
+
+  dat <- data.frame(
+    lower = c(NA, lower),
+    mean  = c(NA, mean),
+    upper = c(NA, upper)
+  )
+
+  study <- c("Study", sub(",", " ", studyname))
+  summaryv <- c(TRUE, rep(FALSE, length(mean)))
+
+  if(summary == "fixed"){
+
+    main <- "Inverse Variance (Fixed-Effects) ORs"
+    dat <- rbind(dat, c(NA, NA, NA))
+    dat <- rbind(dat, c(catmapobject$lbci, catmapobject$combinedOR, catmapobject$ubci))
+    study <- c(study, NA, "Summary")
+    summaryv <- c(summaryv, FALSE, TRUE)
+
+  }else if(summary == "random"){
+
+    main <- "DerSimonian & Laird (Random-Effects) ORs"
+    dat <- rbind(dat, c(NA, NA, NA))
+    dat <- rbind(dat, c(catmapobject$lbci.dsl, catmapobject$OR.dsl, catmapobject$ubci.dsl))
+    study <- c(study, NA, "Summary")
+    summaryv <- c(summaryv, FALSE, TRUE)
+  }
+
+  tex <- cbind(
+    study,
+    c(as.character(round(dat$mean, 2))),
+    c(as.character(round(dat$lower, 2))),
+    c(as.character(round(dat$upper, 2)))
+  )
+
+  colnames(tex) <- NULL
+  tex[1, ] <- c("Study", "OR", paste0("[", catmapobject$ci, "%"), "CI]")
+
+  f <- forestplot::forestplot(
+    labeltext = tex, mean = dat$mean, lower = dat$lower, upper = dat$upper,
+    graph.pos = 2, zero = 1, is.summary = summaryv, xlog = TRUE,
+    col = forestplot::fpColors(box = "black", line = "grey", summary = "red"),
+    title = main
+  )
+
+  return(f)
+}
+
+cleanSink <- function(name, results, sep = ""){
+
+  cat(name, "\n")
+  for(i in 1:ncol(results)) cat(cat(results[1, i], results[2, i], sep = ": "), "\n")
+}

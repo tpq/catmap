@@ -17,7 +17,7 @@
 #' @examples
 #' data(catmapdata)
 #' catmapobject <- catmap(catmapdata, 0.95, TRUE)
-#' catmap.sense(catmapobject, TRUE, TRUE, TRUE)
+#' catmap.sense(catmapobject, FALSE, FALSE, FALSE)
 #' @export
 catmap.sense <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE, printout = FALSE){
 
@@ -69,14 +69,14 @@ catmap.sense <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE, pri
     sfvalues<-c(sf.combinedOR, sf.combinedCI)
     sfplot[f,]<-sfvalues
     cat("# Fixed-Effects Sensitivity Analysis\n")
-    cat(study.removed, sf.results, sep="\n")
+    cleanSink(study.removed, sf.results, sep="\n")
     cat("\n")
 
     # Optional print-out of results
     if(printout){
       sink(paste0(catmapobject$dataset, ".fixed.effects.sensitivity.txt"), append = TRUE)
       cat("# Fixed-Effects Sensitivity Analysis\n")
-      cat(study.removed, sf.results, sep="\n")
+      cleanSink(study.removed, sf.results, sep="\n")
       cat("\n")
       sink()
     }
@@ -86,7 +86,7 @@ catmap.sense <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE, pri
   if(fe.forest) pdf(file = paste0(catmapobject$dataset, ".fixed.effects.sensitivity.plot.pdf"))
   makeForest(catmapobject, main = "Sensitivity Analysis:\nInverse Variance (Fixed-Effects) ORs",
              mean = sfplot[, 1], lower = sfplot[, 2], upper = sfplot[, 3],
-             study = paste("Study Removed:\n", catmapobject$studyname))
+             studyname = paste("Study Removed:\n", catmapobject$studyname))
   if(fe.forest) graphics.off()
 
   # Random-Effects Sensitivity Analysis
@@ -160,14 +160,14 @@ catmap.sense <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE, pri
       srvalues<-c(srOR.dsl, srci.dsl)
       srplot[r,]<-srvalues
       cat("# Random-Effects Sensitivity Analysis\n")
-      cat(srstudy.removed, sr.results, sep="\n")
+      cleanSink(srstudy.removed, sr.results, sep="\n")
       cat("\n")
 
       # Optional print-out of results
       if(printout){
         sink(paste0(catmapobject$dataset, ".random.effects.sensitivity.txt"), append = TRUE)
         cat("# Random-Effects Sensitivity Analysis\n")
-        cat(srstudy.removed, sr.results, sep="\n")
+        cleanSink(srstudy.removed, sr.results, sep="\n")
         cat("\n")
         sink()
       }
@@ -177,7 +177,7 @@ catmap.sense <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE, pri
     if(re.forest) pdf(file = paste0(catmapobject$dataset, ".random.effects.sensitivity.plot.pdf"))
     makeForest(catmapobject, main = "Sensitivity Analysis:\nDerSimonian & Laird (Random-Effects) ORs",
                mean = srplot[, 1], lower = srplot[, 2], upper = srplot[, 3],
-               study = paste("Study Removed:\n", catmapobject$studyname))
+               studyname = paste("Study Removed:\n", catmapobject$studyname))
     if(re.forest) graphics.off()
   }
 
@@ -208,7 +208,7 @@ catmap.sense <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE, pri
 #' @examples
 #' data(catmapdata)
 #' catmapobject <- catmap(catmapdata, 0.95, TRUE)
-#' catmap.cumulative(catmapobject, TRUE, TRUE, TRUE)
+#' catmap.cumulative(catmapobject, FALSE, FALSE, FALSE)
 #' @export
 catmap.cumulative <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE, printout = FALSE){
 
@@ -260,14 +260,14 @@ catmap.cumulative <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE
     cfvalues<-c(cf.combinedOR, cf.combinedCI)
     cfplot[c,]<-cfvalues
     cat("# Fixed-Effects Cumulative Meta-Analysis\n")
-    cat(study.added, cf.results, sep="\n")
+    cleanSink(study.added, cf.results, sep="\n")
     cat("\n")
 
     # Optional print-out of results
     if(printout){
       sink(paste0(catmapobject$dataset, ".fixed.effects.cumulative.txt"), append = TRUE)
       cat("# Fixed-Effects Cumulative Meta-Analysis\n")
-      cat(study.added, cf.results, sep="\n")
+      cleanSink(study.added, cf.results, sep="\n")
       cat("\n")
       sink()
     }
@@ -277,7 +277,7 @@ catmap.cumulative <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE
   if(fe.forest) pdf(file = paste0(catmapobject$dataset, ".fixed.effects.cumulative.plot.pdf"))
   makeForest(catmapobject, main = "Cumulative Meta-Analysis:\nInverse Variance (Fixed-Effects) ORs",
              mean = cfplot[, 1], lower = cfplot[, 2], upper = cfplot[, 3],
-             study = paste("Study Added:\n", catmapobject$studyname))
+             studyname = paste("Study Added:\n", catmapobject$studyname))
   if(fe.forest) graphics.off()
 
   # Random-Effects Sensitivity Analysis
@@ -358,14 +358,14 @@ catmap.cumulative <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE
       crplot[1,2]<-catmapobject$lbci.fe[1]
       crplot[1,3]<-catmapobject$ubci.fe[1]
       cat("# Random-Effects Cumulative Meta-Analysis\n")
-      cat(crstudy.added, cr.results, sep="\n")
+      cleanSink(crstudy.added, cr.results, sep="\n")
       cat("\n")
 
       # Optional print-out of results
       if(printout){
         sink(paste0(catmapobject$dataset, ".random.effects.cumulative.txt"), append = TRUE)
         cat("# Random-Effects Cumulative Meta-Analysis\n")
-        cat(crstudy.added, cr.results, sep="\n")
+        cleanSink(crstudy.added, cr.results, sep="\n")
         cat("\n")
         sink()
       }
@@ -375,7 +375,7 @@ catmap.cumulative <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE
     if(re.forest) pdf(file = paste0(catmapobject$dataset, ".random.effects.cumulative.plot.pdf"))
     makeForest(catmapobject, main = "Cumulative Meta-Analysis:\nDerSimonian & Laird (Random-Effects) ORs",
                mean = crplot[, 1], lower = crplot[, 2], upper = crplot[, 3],
-               study = paste("Study Added:\n", catmapobject$studyname))
+               studyname = paste("Study Added:\n", catmapobject$studyname))
     if(re.forest) graphics.off()
   }
 
