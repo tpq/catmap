@@ -1,4 +1,4 @@
-## catmap 1.6.2.9000
+## catmap 1.6.3
 ---------------------
 * Modified `makeForest`
     * Use `grid` to call `grid.newpage()` before plotting
