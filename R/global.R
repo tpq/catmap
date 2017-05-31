@@ -69,7 +69,7 @@ makeForest <- function(catmapobject, summary = "", main = "Main Title", mean = e
     study <- c(study, NA, "Summary")
     summaryv <- c(summaryv, FALSE, TRUE)
     gridline <- list("grid" = log(catmapobject$combinedOR))
-    weights <- c("Weight", round(catmapobject$weight, 2), NA, NA)
+    weights <- c("Weight (%)", round(catmapobject$weight / sum(catmapobject$weight), 2), NA, NA)
 
   }else if(summary == "random"){
 
@@ -79,7 +79,7 @@ makeForest <- function(catmapobject, summary = "", main = "Main Title", mean = e
     study <- c(study, NA, "Summary")
     summaryv <- c(summaryv, FALSE, TRUE)
     gridline <- list("grid" = log(catmapobject$OR.dsl))
-    weights <- c("Weight", round(catmapobject$weight.dsl, 2), NA, NA)
+    weights <- c("Weight (%)", round(catmapobject$weight.dsl / sum(catmapobject$weight.dsl), 2), NA, NA)
   }
 
   tex <- cbind(
