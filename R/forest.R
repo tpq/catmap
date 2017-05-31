@@ -26,6 +26,7 @@ catmap.forest <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE){
   if(!fe.forest & !re.forest) par(ask = TRUE)
 
   # FE
+  grid::grid.newpage()
   if(fe.forest) pdf(file = paste0(catmapobject$dataset, ".fixed.effects.plot.pdf"))
   f1 <- makeForest(catmapobject, summary = "fixed")
   if(fe.forest) graphics.off()
@@ -35,6 +36,7 @@ catmap.forest <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE){
     message("NOTICE: tau2 is less than or equal to 0.\n",
             " No random effects estimates calculated.\n")
   }else{
+    grid::grid.newpage()
     if(re.forest) pdf(file = paste0(catmapobject$dataset, ".random.effects.plot.pdf"))
     f2 <- makeForest(catmapobject, summary = "random")
     if(re.forest) graphics.off()
@@ -130,6 +132,7 @@ catmap.sense <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE, pri
   }
 
   # Optional output of plot
+  grid::grid.newpage()
   if(fe.forest) pdf(file = paste0(catmapobject$dataset, ".fixed.effects.sensitivity.plot.pdf"))
   makeForest(catmapobject, main = "Sensitivity Analysis:\nInverse Variance (Fixed-Effects) ORs",
              mean = sfplot[, 1], lower = sfplot[, 2], upper = sfplot[, 3],
@@ -221,6 +224,7 @@ catmap.sense <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE, pri
     }
 
     # Optional output of plot
+    grid::grid.newpage()
     if(re.forest) pdf(file = paste0(catmapobject$dataset, ".random.effects.sensitivity.plot.pdf"))
     makeForest(catmapobject, main = "Sensitivity Analysis:\nDerSimonian & Laird (Random-Effects) ORs",
                mean = srplot[, 1], lower = srplot[, 2], upper = srplot[, 3],
@@ -321,6 +325,7 @@ catmap.cumulative <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE
   }
 
   # Optional output of plot
+  grid::grid.newpage()
   if(fe.forest) pdf(file = paste0(catmapobject$dataset, ".fixed.effects.cumulative.plot.pdf"))
   makeForest(catmapobject, main = "Cumulative Meta-Analysis:\nInverse Variance (Fixed-Effects) ORs",
              mean = cfplot[, 1], lower = cfplot[, 2], upper = cfplot[, 3],
@@ -419,6 +424,7 @@ catmap.cumulative <- function(catmapobject, fe.forest = FALSE, re.forest = FALSE
     }
 
     # Optional output of plot
+    grid::grid.newpage()
     if(re.forest) pdf(file = paste0(catmapobject$dataset, ".random.effects.cumulative.plot.pdf"))
     makeForest(catmapobject, main = "Cumulative Meta-Analysis:\nDerSimonian & Laird (Random-Effects) ORs",
                mean = crplot[, 1], lower = crplot[, 2], upper = crplot[, 3],

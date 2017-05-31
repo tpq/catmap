@@ -1,3 +1,10 @@
+## catmap 1.6.2.9000
+---------------------
+* Modified `makeForest`
+    * Use `grid` to call `grid.newpage()` before plotting
+    * Study weights added to summary forest plots
+    * Dashed line added to summary forest plots
+
 ## catmap 1.6.2
 ---------------------
 * Add unit tests for core functions

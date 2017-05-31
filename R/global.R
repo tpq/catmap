@@ -58,6 +58,8 @@ makeForest <- function(catmapobject, summary = "", main = "Main Title", mean = e
 
   study <- c("Study", sub(",", " ", studyname))
   summaryv <- c(TRUE, rep(FALSE, length(mean)))
+  gridline <- NULL # excluded unless 'summary' is specified
+  weights <- NULL # excluded unless 'summary' is specified
 
   if(summary == "fixed"){
 
@@ -66,6 +68,8 @@ makeForest <- function(catmapobject, summary = "", main = "Main Title", mean = e
     dat <- rbind(dat, c(catmapobject$lbci, catmapobject$combinedOR, catmapobject$ubci))
     study <- c(study, NA, "Summary")
     summaryv <- c(summaryv, FALSE, TRUE)
+    gridline <- list("grid" = log(catmapobject$combinedOR))
+    weights <- c("Weight", round(catmapobject$weight, 2), NA, NA)
 
   }else if(summary == "random"){
 
@@ -74,6 +78,8 @@ makeForest <- function(catmapobject, summary = "", main = "Main Title", mean = e
     dat <- rbind(dat, c(catmapobject$lbci.dsl, catmapobject$OR.dsl, catmapobject$ubci.dsl))
     study <- c(study, NA, "Summary")
     summaryv <- c(summaryv, FALSE, TRUE)
+    gridline <- list("grid" = log(catmapobject$OR.dsl))
+    weights <- c("Weight", round(catmapobject$weight.dsl, 2), NA, NA)
   }
 
   tex <- cbind(
@@ -83,14 +89,15 @@ makeForest <- function(catmapobject, summary = "", main = "Main Title", mean = e
     c(as.character(round(dat$upper, 2)))
   )
 
-  colnames(tex) <- NULL
   tex[1, ] <- c("Study", "OR", paste0("[", catmapobject$ci, "%"), "CI]")
+  if(!is.null(weights)) tex <- cbind(tex[, 1], weights, tex[, -1])
+  colnames(tex) <- NULL
 
-  f <- forestplot::forestplot(
+  f <- do.call(forestplot::forestplot, c(list(
     labeltext = tex, mean = dat$mean, lower = dat$lower, upper = dat$upper,
     graph.pos = 2, zero = 1, is.summary = summaryv, xlog = TRUE, new_page = FALSE,
     col = forestplot::fpColors(box = "black", line = "grey", summary = "red"),
-    title = main
+    title = main), gridline)
   )
 
   return(f)
