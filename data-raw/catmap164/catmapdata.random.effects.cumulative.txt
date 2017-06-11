@@ -1,0 +1,50 @@
+# Random-Effects Cumulative Meta-Analysis
+Study Added = Peter,2002 
+Q Statistic (Heterogeneity) Chi-Square: 0 
+Q Statistic (Heterogeneity) p-value: 1 
+DerSimonian & Laird Random-Effects OR: NaN 
+DerSimonian & Laird Random-Effects Lower Bound CI: NaN 
+DerSimonian & Laird Random-Effects Upper Bound CI: NaN 
+DerSimonian & Laird Random-Effects Chi-Square: NaN 
+DerSimonian & Laird Random-Effects p-value: NaN 
+
+# Random-Effects Cumulative Meta-Analysis
+Study Added = Abrams,2001 
+Q Statistic (Heterogeneity) Chi-Square: 0.86733 
+Q Statistic (Heterogeneity) p-value: 0.35169 
+DerSimonian & Laird Random-Effects OR: 0.99814 
+DerSimonian & Laird Random-Effects Lower Bound CI: 0.83012 
+DerSimonian & Laird Random-Effects Upper Bound CI: 1.20016 
+DerSimonian & Laird Random-Effects Chi-Square: 0.00039 
+DerSimonian & Laird Random-Effects p-value: 0.98418 
+
+# Random-Effects Cumulative Meta-Analysis
+Study Added = Todd,2003 
+Q Statistic (Heterogeneity) Chi-Square: 195.91966 
+Q Statistic (Heterogeneity) p-value: 0 
+DerSimonian & Laird Random-Effects OR: 1.91459 
+DerSimonian & Laird Random-Effects Lower Bound CI: 0.49022 
+DerSimonian & Laird Random-Effects Upper Bound CI: 7.4776 
+DerSimonian & Laird Random-Effects Chi-Square: 0.87305 
+DerSimonian & Laird Random-Effects p-value: 0.35011 
+
+# Random-Effects Cumulative Meta-Analysis
+Study Added = Yu,2007 
+Q Statistic (Heterogeneity) Chi-Square: 227.34549 
+Q Statistic (Heterogeneity) p-value: 0 
+DerSimonian & Laird Random-Effects OR: 2.38417 
+DerSimonian & Laird Random-Effects Lower Bound CI: 0.92984 
+DerSimonian & Laird Random-Effects Upper Bound CI: 6.11314 
+DerSimonian & Laird Random-Effects Chi-Square: 3.27084 
+DerSimonian & Laird Random-Effects p-value: 0.07052 
+
+# Random-Effects Cumulative Meta-Analysis
+Study Added = Wei,2007 
+Q Statistic (Heterogeneity) Chi-Square: 231.01883 
+Q Statistic (Heterogeneity) p-value: 0 
+DerSimonian & Laird Random-Effects OR: 2.31192 
+DerSimonian & Laird Random-Effects Lower Bound CI: 1.02905 
+DerSimonian & Laird Random-Effects Upper Bound CI: 5.19409 
+DerSimonian & Laird Random-Effects Chi-Square: 4.1181 
+DerSimonian & Laird Random-Effects p-value: 0.04243 
+
