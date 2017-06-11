@@ -6,7 +6,8 @@
 \usage{
 makeForest(catmapobject, summary = "", main = "Main Title",
   mean = exp(catmapobject$logOR), lower = catmapobject$lbci.fe,
-  upper = catmapobject$ubci.fe, studyname = catmapobject$studyname)
+  upper = catmapobject$ubci.fe, study = c("Study", sub(",", " ",
+  catmapobject$studyname)))
 }
 \arguments{
 \item{catmapobject}{A catmap object created by \code{\link{catmap}}.}
@@ -16,7 +17,7 @@ to plot. Select from "fixed" or "random".}
 
 \item{main}{A character string. The figure title.}
 
-\item{mean, lower, upper, studyname}{Numeric or character vectors.
+\item{mean, lower, upper, study}{Numeric or character vectors.
 Used to guide the construction of the forest plot.}
 }
 \description{

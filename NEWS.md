@@ -1,3 +1,11 @@
+## catmap 1.6.4
+---------------------
+* Modified visualization tools
+    * Moved "Weight (%)" column to end of figure
+    * Added summary diamond and weights to all figures
+    * Slight change to appearance of confidence intervals
+    * Slight change to how studies get named
+
 ## catmap 1.6.3
 ---------------------
 * Modified `makeForest`

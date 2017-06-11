@@ -1,6 +1,6 @@
 Package: catmap
 Title: Case-Control and TDT Meta-Analysis Package
-Version: 1.6.3
+Version: 1.6.4
 URL: http://github.com/tpq/catmap
 BugReports: http://github.com/tpq/catmap/issues
 Authors@R: c(

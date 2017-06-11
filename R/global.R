@@ -43,12 +43,12 @@ NULL
 #' @inheritParams catmap.funnel
 #' @param summary A character string. The kind of summary statistic
 #'  to plot. Select from "fixed" or "random".
-#' @param mean,lower,upper,studyname Numeric or character vectors.
+#' @param mean,lower,upper,study Numeric or character vectors.
 #'  Used to guide the construction of the forest plot.
 #' @param main A character string. The figure title.
 makeForest <- function(catmapobject, summary = "", main = "Main Title", mean = exp(catmapobject$logOR),
                        lower = catmapobject$lbci.fe, upper = catmapobject$ubci.fe,
-                       studyname = catmapobject$studyname){
+                       study = c("Study", sub(",", " ", catmapobject$studyname))){
 
   dat <- data.frame(
     lower = c(NA, lower),
@@ -56,7 +56,6 @@ makeForest <- function(catmapobject, summary = "", main = "Main Title", mean = e
     upper = c(NA, upper)
   )
 
-  study <- c("Study", sub(",", " ", studyname))
   summaryv <- c(TRUE, rep(FALSE, length(mean)))
   gridline <- NULL # excluded unless 'summary' is specified
   weights <- NULL # excluded unless 'summary' is specified
@@ -85,12 +84,12 @@ makeForest <- function(catmapobject, summary = "", main = "Main Title", mean = e
   tex <- cbind(
     study,
     c(as.character(round(dat$mean, 2))),
-    c(as.character(round(dat$lower, 2))),
-    c(as.character(round(dat$upper, 2)))
+    ifelse(!is.na(dat$lower), paste0("(", as.character(round(dat$lower, 2)), ", "), ""),
+    ifelse(!is.na(dat$upper), paste0(as.character(round(dat$upper, 2)), ")"), "")
   )
 
-  tex[1, ] <- c("Study", "OR", paste0("[", catmapobject$ci, "%"), "CI]")
-  if(!is.null(weights)) tex <- cbind(tex[, 1], weights, tex[, -1])
+  tex[1, ] <- c(tex[1, 1], "OR", paste0("(", catmapobject$ci*100, "%"), "CI)")
+  if(!is.null(weights)) tex <- cbind(tex, weights)
   colnames(tex) <- NULL
 
   f <- do.call(forestplot::forestplot, c(list(
