@@ -7,7 +7,13 @@
 
 0 errors | 0 warnings | 1 note
 
+* New submission
+
+* Package was archived on CRAN
+
 * Possibly mis-spelled words in DESCRIPTION:
+
+This is a re-submission of the first catmap package as archived on CRAN. The original maintainer and active author, Kristin Nicodemus, has consented to the transfer of maintainence.
 
 I have reviewed the DESCRIPTION and attest it does not contain any mis-spellings.
 
