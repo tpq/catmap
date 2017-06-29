@@ -13,7 +13,7 @@
 
 * Possibly mis-spelled words in DESCRIPTION:
 
-This is a re-submission of the first catmap package as archived on CRAN. The original maintainer and active author, Kristin Nicodemus, has consented to the transfer of maintainence.
+This is a re-submission of the first catmap package as archived on CRAN (with some improvements to plot routines). I am unable to reach the original maintainer, Kristin Nicodemus, by e-mail (using the archived address and another found online). I think the original catmap package is effectively orphaned. Otherwise, I can re-submit as "catmap2"?
 
 I have reviewed the DESCRIPTION and attest it does not contain any mis-spellings.
 
